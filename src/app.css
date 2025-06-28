@@ -1,12 +1,37 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-mj-green-50:  #f0f5f0;
+  --color-mj-green-100: #d6e6d6;
+  --color-mj-green-200: #b3d0b4;
+  --color-mj-green-300: #85b288;
+  --color-mj-green-400: #5a8f60;  /* Base soft Mahjong green */
+  --color-mj-green-500: #3a6b41;  /* Classic deep tone */
+  --color-mj-green-600: #2d5534;
+  --color-mj-green-700: #23432a;
+  --color-mj-green-800: #1d3622;  /* Rich deep variant */
+  --color-mj-green-900: #142a19;
+  --color-mj-green-950: #0c1d10;
+  --color-mj-green: #1a4d2a;
+
+  --color-mj-dark-green: #1e293b;
+}
+
 :root {
+  --mahjong-dark: #027101;
+  --mahjong-light: #E6F1E6;
+  --mahjong-white: #ffffff;
   --background-rgb: 214, 219, 220;
   --foreground-rgb: 0, 0, 0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --mahjong-dark: #027101;
+    --mahjong-light: #E6F1E6;
+    --mahjong-white: #ffffff;
     --background-rgb: 0, 0, 0;
     --foreground-rgb: 255, 255, 255;
   }
