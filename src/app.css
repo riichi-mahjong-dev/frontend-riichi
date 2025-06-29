@@ -41,3 +41,8 @@ body {
   background: rgb(var(--background-rgb));
   color: rgb(var(--foreground-rgb));
 }
+
+#app {
+  height: 100%;
+  width: 100%;
+}

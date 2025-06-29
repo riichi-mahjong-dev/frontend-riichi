@@ -4,10 +4,10 @@ export default function AdminLogin() {
   const [username, setUsername] = createSignal<string>("");
   const [password, setPassword] = createSignal<string>("");
 
-  const loginAction = (e) => {
+  const loginAction = (e: Event) => {
     e.preventDefault();
-    const username = username();
-    const password = password();
+    const currUsername: string = username();
+    const currPassword: string = password();
     console.log("login");
   }
 
@@ -21,7 +21,7 @@ export default function AdminLogin() {
         <div class="flex flex-col flex-1 items-center dark:bg-mj-dark-green bg-white justify-center lg:p-16 p-4">
             <form class="flex flex-col lg:w-2/3 w-full gap-6 items-center rounded p-8" onSubmit={loginAction}>
                 <label class="text-left w-full">
-                  <h1 class="text-5xl text-mj-green-400 dark:text-white font-bold">Sign In</h1>
+                  <h1 class="text-5xl text-mj-green-400 dark:text-white font-bold">Login</h1>
                 </label>
                 <div class="flex w-full bg-white p-4 rounded border dark:border-mj-green border-mj-green-400">
                   <input
