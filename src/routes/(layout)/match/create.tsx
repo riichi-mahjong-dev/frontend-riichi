@@ -1,5 +1,4 @@
-
-export default function Ranked() {
+export default function CreateMatch() {
   return (
     <main>
     </main>

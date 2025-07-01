@@ -12,7 +12,7 @@ export default function Login() {
   }
 
   return (
-    <main class="flex lg:flex-row flex-col w-full h-screen">
+    <main class="flex lg:flex-row flex-col w-full h-screen min-h-120">
         <div class="lg:flex flex-1 items-center justify-center hidden none dark:bg-mj-green bg-mj-green-400">
           <div class="text-5xl p-4">
             Logo

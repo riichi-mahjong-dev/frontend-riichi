@@ -16,7 +16,13 @@
   --color-mj-green-950: #0c1d10;
   --color-mj-green: #1a4d2a;
 
+  --color-content: #F4F4F4;
+  --color-card: #FDFDFD;
+
   --color-mj-dark-green: #1e293b;
+
+  /*screen*/
+  --breakpoint-tablet: '1000px';
 }
 
 :root {
@@ -32,7 +38,7 @@
     --mahjong-dark: #027101;
     --mahjong-light: #E6F1E6;
     --mahjong-white: #ffffff;
-    --background-rgb: 0, 0, 0;
+    --background-rgb: 255, 255, 255;
     --foreground-rgb: 255, 255, 255;
   }
 }
@@ -45,4 +51,14 @@ body {
 #app {
   height: 100%;
   width: 100%;
+}
+
+.scrollable-container {
+  overflow: auto; /* Enables scrolling */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.scrollable-container::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
 }
