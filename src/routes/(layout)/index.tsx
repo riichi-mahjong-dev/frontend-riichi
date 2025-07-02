@@ -1,4 +1,5 @@
 import Card from "~/components/Card";
+import PlayerCard from "~/components/Card/Player";
 
 export default function HomeApp() {
   return (
@@ -11,16 +12,16 @@ export default function HomeApp() {
           <div class="flex flex-col">
             <div class="flex justify-between items-center">
               <h2>
-                <label class="text-4xl text-mj-green-400">Ranked</label>
+                <label class="text-4xl text-mj-green-400">Rankings</label>
               </h2>
               <a href="/ranked" class="text-2xl text-mj-green-300">See more</a>
             </div>
             <div class="flex w-full scrollable-container">
-              <div class="flex flex-row min-w-[930px] lf:gap-2 gap-4 py-10">
-                  <Card/>
-                  <Card/>
-                  <Card/>
-                  <Card/>
+              <div class="flex flex-row min-w-[930px] lf:gap-2 gap-4 py-10 px-4">
+                <PlayerCard id={1} name="Kristian Ruben" mr={1000}/>
+                <PlayerCard id={2} name="Kristian Ruben" mr={1000}/>
+                <PlayerCard id={3} name="Kristian Ruben" mr={1000}/>
+                <PlayerCard id={4} name="Kristian Ruben" mr={1000}/>
               </div>
             </div>
           </div>

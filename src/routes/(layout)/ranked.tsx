@@ -1,4 +1,9 @@
-import { createSignal } from "solid-js";
+"use client";
+
+import { createSignal, lazy } from "solid-js";
+import Card from "~/components/Card";
+import PlayerCard from "~/components/Card/Player";
+const SearchBar = lazy(() => import('./../../components/Search'));
 
 export default function Ranked() {
   const [query, setQuery] = createSignal<string>("");
@@ -6,24 +11,13 @@ export default function Ranked() {
   const [sortBy, setSortBy] = createSignal<string>("id");
 
   return (
-    <main class="flex flex-col w-full text-center mx-auto text-gray-700 bg-white">
-        <div class="relative w-full bg-mj-green-400">
-          <div class="w-full h-[250px] text-left">
-          </div>
-          <div class="absolute -bottom-14 h-28 w-full px-8">
-            <div class="flex bg-white xl:w-[930px] h-full mx-auto shadow-xl rounded-xl px-6 py-8">
-              <div class="flex-1">
-                <input class="outline-none focus:outline-none focus:ring-0 w-full h-full text-2xl" type="search" placeholder="Search..."/>
-              </div>
-              <div class="w-30 h-full">
-              </div>
-            </div>
-          </div>
+    <main class="flex flex-col w-full text-center mx-auto text-gray-700 bg-content">
+      <SearchBar/>
+      <div class="flex flex-col gap-4 xl:w-[930px] w-full xl:px-0 px-8 py-8 mt-20 mx-auto bg-content">
+        <div>
+          <PlayerCard/>
         </div>
-        <div class="flex flex-col gap-4 xl:w-[930px] w-full xl:px-0 px-8 py-8 mx-auto bg-white">
-          <div>
-          </div>
-        </div>
+      </div>
     </main>
   );
 }
