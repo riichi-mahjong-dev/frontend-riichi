@@ -1,9 +1,7 @@
-"use client";
-
-import { createSignal, lazy } from "solid-js";
-import Card from "~/components/Card";
+import { createSignal, Suspense } from "solid-js";
+import { clientOnly } from "@solidjs/start";
 import PlayerCard from "~/components/Card/Player";
-const SearchBar = lazy(() => import('./../../components/Search'));
+const SearchBar = clientOnly(() => import('~/components/Search'));
 
 export default function Ranked() {
   const [query, setQuery] = createSignal<string>("");
@@ -12,10 +10,12 @@ export default function Ranked() {
 
   return (
     <main class="flex flex-col w-full text-center mx-auto text-gray-700 bg-content">
-      <SearchBar/>
+      <Suspense>
+        <SearchBar/>
+      </Suspense>
       <div class="flex flex-col gap-4 xl:w-[930px] w-full xl:px-0 px-8 py-8 mt-20 mx-auto bg-content">
         <div>
-          <PlayerCard/>
+          <PlayerCard />
         </div>
       </div>
     </main>

@@ -1,13 +1,13 @@
-import { createSignal } from "solid-js/types/server/reactive.js";
+import { createSignal } from "solid-js";
 
-type ValidationRule = (value: string) => string | undefined;
+type ValidationRule = (value: string) => string | null;
 
 type FieldState = {
     value: () => string;
-    error: () => string | undefined;
+    error: () => string | null;
     rules: ValidationRule[];
     setValue: (value: any) => void;
-    setError: (error: string | undefined) => void;
+    setError: (error: string | null) => void;
 }
 
 type UseFormReturn<T> = {
@@ -23,7 +23,7 @@ export function useForm<T extends Record<string, string>>(initialValues: T, rule
         const fieldRules = rules[key];
 
         const [value, setValue] = createSignal<any>(initialValue);
-        const [error, setError] = createSignal<string|undefined>(undefined);
+        const [error, setError] = createSignal<string|null>(null);
 
         fields[key] = {
             value: () => value(),
@@ -32,7 +32,7 @@ export function useForm<T extends Record<string, string>>(initialValues: T, rule
             setValue: (newValue: any) => {
                 setValue(newValue);
             },
-            setError: (newError: string|undefined) => {
+            setError: (newError: string|null) => {
                 setError(newError);
             }
         };
@@ -47,7 +47,7 @@ export function useForm<T extends Record<string, string>>(initialValues: T, rule
                 return false;
             }
         }
-        field.setError(undefined);
+        field.setError(null);
         return true;
     }
 
@@ -62,7 +62,7 @@ export function useForm<T extends Record<string, string>>(initialValues: T, rule
             if (!validateField(key as keyof T)) {
                 isValid = false;
             }
-            values[key] = field.value;
+            values[key] = field.value();
         }
 
         if (isValid) {

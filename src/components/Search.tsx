@@ -1,4 +1,4 @@
-import { IoOptionsOutline } from "solid-icons/io";
+import EllipsisVertical from "lucide-solid/icons/ellipsis-vertical";
 
 export default function Search() {
   return (
@@ -11,7 +11,7 @@ export default function Search() {
               <input class="outline-none focus:outline-none focus:ring-0 w-full h-full text-2xl" type="search" placeholder="Search..."/>
             </div>
             <div class="flex items-center justify-center w-30 h-full">
-              <IoOptionsOutline size={24}/>
+              <EllipsisVertical />
             </div>
           </div>
         </div>
