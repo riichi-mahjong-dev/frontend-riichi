@@ -72,52 +72,54 @@ export default function SideMenu(props: SideMenuProps) {
       </Header>
       <div
           class={
-              `fixed transform transition-transform duration-200 ease-in-out z-40 flex pt-3.5 w-[80vw] md:w-sidebar h-screen bg-white md:translate-x-0 -translate-x-full ${isOpen() ? 'translate-x-0' : '-translate-x-full'}`
+              `fixed transform transition-transform duration-200 ease-in-out z-40 flex pt-3.5 w-[80vw] md:w-sidebar h-screen bg-white overflow-auto md:translate-x-0 -translate-x-full ${isOpen() ? 'translate-x-0' : '-translate-x-full'}`
           }
       >
-      <div class="relative">
-        <div class="flex flex-col gap-9-5 pt-5">
-          <For each={props.menus}>
-            {({ label, icon, to, path }, index) => {
-              const isSelected = () => {
-                const pathLocation = location.pathname;
-                return path.some((pattern) => {
-                  try {
-                    const regex = RegExp(pattern);
-                    return regex.test(pathLocation);
-                  } catch (e) {
-                    return false;
-                  }
-                });
-              };
-              return (
-                <div ref={(el) => (menuRefMap[index()] = el)}>
-                  <MenuItem
-                    label={label}
-                    Icon={icon}
-                    selected={isSelected}
-                    onClick={async () => {
-                      navigation(to);
-                      props.OnMenuSelected(index());
-                      setIsOpen(false);
-                      setAdmin({
-                        selectedLabel: label,
-                      });
-                    }}
-                  />
-                </div>
-              );
-            }}
-          </For>
-        </div>
-        <div
-          class="absolute left-0 w-1 h-h-3 bg-black rounded-tr-lg rounded-br-lg transition-all duration-300"
-          style={{
-            top: `${activeStyle().top}px`,
-            height: `${activeStyle().height}px`,
-          }}
-        ></div>
-        </div>
+        <div class="relative">
+            <div class="flex flex-col gap-9-5 pt-5">
+              <For each={props.menus}>
+                {({ label, icon, to, path }, index) => {
+                  const isSelected = () => {
+                    const pathLocation = location.pathname;
+                    return path.some((pattern) => {
+                      try {
+                        const regex = RegExp(pattern);
+                        return regex.test(pathLocation);
+                      } catch (e) {
+                        return false;
+                      }
+                    });
+                  };
+                  return (
+                    <div ref={(el) => (menuRefMap[index()] = el)}>
+                      <MenuItem
+                        label={label}
+                        Icon={icon}
+                        selected={isSelected}
+                        onClick={async () => {
+                          navigation(to);
+                          props.OnMenuSelected(index());
+                          setIsOpen(false);
+                          setAdmin({
+                            selectedLabel: label,
+                          });
+                        }}
+                      />
+                    </div>
+                  );
+                }}
+              </For>
+              <div class="h-[100px]"></div>
+            </div>
+            <div
+              class="absolute left-0 w-1 h-h-3 bg-black rounded-tr-lg rounded-br-lg transition-all duration-300"
+              style={{
+                top: `${activeStyle().top}px`,
+                height: `${activeStyle().height}px`,
+              }}
+            >
+            </div>
+          </div>
         </div>
         <div class="w-full h-screen">
           <div
