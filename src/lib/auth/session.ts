@@ -26,7 +26,7 @@ export const loginProtected = query(async() => {
   return null;
 }, 'login-protected');
 
-export const pageOnlyFor = query(async (role: string[]) => {
+export const pageOnlyFor = query(async (role: string[], redirectTo: string = '/login') => {
   "use server";
 
   const session = await getSessionUser();
@@ -35,7 +35,7 @@ export const pageOnlyFor = query(async (role: string[]) => {
     return null;
   }
 
-  throw redirect('/login');
+  throw redirect(redirectTo);
 }, 'page-protected');
 
 export function getSession() {

@@ -23,6 +23,74 @@
 
   /*screen*/
   --breakpoint-tablet: '1000px';
+  --spacing-default: 25px;
+  --color-label-selected: #232323;
+  --color-label-gray: #718EBF;
+  --color-label-unselected: #B1B1B1;
+  --spacing-9-5: 2.375rem;
+  --text-head-1: 1.75rem;
+  --text-head-2: 1.5rem;
+  --text-head-3: 1.25rem;
+  --text-head-4: 1.125rem;
+  --text-head-5: 1rem;
+  --text-sl: 0.9375rem;
+  --text-logo: 1.5625rem;
+  --spacing-head-1: 2.12rem;
+  --spacing-head-2: 1.81rem;
+  --spacing-head-3: 1.51rem;
+  --spacing-head-4: 1.36rem;
+  --spacing-head-5: 1.21rem;
+  --spacing-chip-horizontal: 350px;
+  --spacing-chip-vertical: 235px;
+  --radius-chip: 25px;
+  --radius-input: 15px;
+  --radius-5xl: 50px;
+  --radius-search: 25px;
+  --spacing-default: 25px;
+  --spacing-mobile: 18px;
+  --radius-button: 15px;
+  --spacing-sidebar: 250px;
+  --color-default-background: #E6EFF5;
+  --spacing-header: 101px;
+  --spacing-header-mobile: 140px;
+  --spacing-appbar-mobile: 35px;
+  --color-greyish-blues: #F5F7FA;
+  --spacing-search-box: 40px;
+  --spacing-search-inside: 19px;
+  --spacing-item: 15px;
+  --color-text-placeholder: #8BA3CB;
+  --color-default: #343C6A;
+  --color-label-selected: #232323;
+  --color-label-gray: #718EBF;
+  --color-label-unselected: #B1B1B1;
+  --spacing-9-5: 2.375rem;
+  --spacing-21: 85px;
+  --spacing-6-5: 1.625rem;
+  --spacing-9-5: 2.375rem;
+  --spacing-12-5: 3.125rem;
+  --spacing-7-5: 1.875rem;
+  --spacing-8-5: 2.1875rem;
+  --spacing-15: 3.75rem;
+  --spacing-22: 5.625rem;
+  --breakpoint-md: 62.5rem;
+  --breakpoint-content: 93.75rem;
+  --spacing-7-5: 1.875rem;
+  --spacing-container-menu: 1110px;
+  --spacing-17: 74px;
+  --color-light-pastel-blue: #DFEAF2;
+  --spacing-form: 418px;
+  --spacing-horizontal-min: 265px;
+  --spacing-vertical-min: 170px;
+  --spacing-transaction: 55px;
+  --color-card: #FFF5D9;
+  --color-paypal: #E7EDFF;
+  --color-transfer: #DCFAF8;
+  --color-outcome: #FF4B4A;
+  --color-income: #41D4A8;
+  --color-light-black: #5B5A6F;
+  --color-light-gray-blue: #EDF1F7;
+  --spacing-5xl: 50px;
+  --color-border: #F4F5F7;
 }
 
 :root {
@@ -45,7 +113,6 @@
 
 body {
   background: rgb(var(--background-rgb));
-  color: rgb(var(--foreground-rgb));
 }
 
 #app {
