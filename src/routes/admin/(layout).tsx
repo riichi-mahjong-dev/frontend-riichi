@@ -6,6 +6,7 @@ import UserRoundIcon from "lucide-solid/icons/user-round";
 import Gamepad from "lucide-solid/icons/gamepad";
 import House from "lucide-solid/icons/house";
 import { AdminProvider } from "~/components/context/AdminContext";
+import { getSessionUser } from "~/lib/auth/session";
 
 const SideMenu = clientOnly(() => import("~/components/menus/SideMenu"));
 
@@ -37,7 +38,7 @@ const menus = [
 ];
 
 export default function AdminLayout(props: RouteSectionProps) {
-  // const user = createAsync(() => getSessionUser());
+  const user = createAsync(() => getSessionUser());
   const [menuSelected, setMenuSelected] = createSignal<number>(0);
 
   return (

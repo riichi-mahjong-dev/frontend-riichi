@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "@solidjs/router";
-import { JSX, createEffect, createSignal, For, children, Component } from "solid-js"
+import { JSX, createEffect, createSignal, For, children, Component, onMount, onCleanup } from "solid-js"
 import MenuItem from "./MenuItem";
 import { Header } from "../container/Header";
 import { useAdmin } from "../context/AdminContext";
@@ -27,6 +27,16 @@ export default function SideMenu(props: SideMenuProps) {
   const [activeStyle, setActiveStyle] = createSignal<{top: number; height: number;}>({top: 0, height: 0});
 
   const menuRefMap: Record<number, HTMLDivElement | undefined> = {};
+
+  const checkScreen = () => {
+      if (window.innerWidth > 768) {
+        setIsOpen(false);
+      }
+  }
+
+  onMount(() => {
+    window.addEventListener('resize', checkScreen);
+  });
 
   createEffect(() => {
     const path = location.pathname;
@@ -60,6 +70,8 @@ export default function SideMenu(props: SideMenuProps) {
 
     window.scrollTo(0, 0);
   });
+
+  onCleanup(() => window.removeEventListener('resize', checkScreen));
 
   return (
     <div class={`w-full h-screen ${props.className}`}>

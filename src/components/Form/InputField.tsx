@@ -5,7 +5,7 @@ type UsernameProps = {
     onInput: (value: string) => void;
     placeholder: string;
     label?: string | null;
-    error: Accessor<string | null>;
+    error?: Accessor<string | null>;
     typeInput?: 'text' | 'password';
 }
 
@@ -24,7 +24,7 @@ export default function InputField({
                   <h1 class="text-5xl text-mj-green-400 dark:text-white font-bold">{label}</h1>
                 </label>
             </Show>
-            <div class={`flex w-full bg-white p-4 rounded border ${error() ? 'dark:border-rose-800' : 'dark:border-mj-green'} ${error() ? 'border-rose-700' : 'border-mj-green-400'}`}>
+            <div class={`flex w-full bg-white p-4 rounded border ${error && error() ? 'dark:border-rose-800' : 'dark:border-mj-green'} ${error && error() ? 'border-rose-700' : 'border-mj-green-400'}`}>
                 <input
                     class="w-full outline-none focus:outline-none focus:ring-0 text-gray-700 text-lg"
                     value={value()}
@@ -33,9 +33,9 @@ export default function InputField({
                     type={typeInput}
                 />
             </div>
-            <Show when={error()}>
+            <Show when={error && error()}>
                 <span class="text-rose-700">
-                    {error()}
+                    {error && error()}
                 </span>
             </Show>
         </div>

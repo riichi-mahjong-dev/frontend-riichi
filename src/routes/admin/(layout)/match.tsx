@@ -1,7 +1,9 @@
-export default function MatchPage() {
+import { RouteSectionProps } from "@solidjs/router";
+
+export default function MatchPage(props: RouteSectionProps) {
   return (
     <div>
-      Match Admin Menu
+      {props.children}
     </div>
   );
 }

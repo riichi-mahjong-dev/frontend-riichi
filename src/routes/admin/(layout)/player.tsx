@@ -1,7 +1,9 @@
-export default function PlayerPage() {
+import { RouteSectionProps } from "@solidjs/router";
+
+export default function PlayerPage(props: RouteSectionProps) {
   return (
     <div>
-      Player Admin Menu
+      {props.children}
     </div>
   );
 }

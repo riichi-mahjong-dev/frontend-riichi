@@ -1,7 +1,9 @@
-export default function ParlourPage() {
+import { RouteSectionProps } from "@solidjs/router";
+
+export default function ParlourPage(props: RouteSectionProps) {
   return (
     <div>
-      Parlour Admin Menu
+      {props.children}
     </div>
   );
 }
