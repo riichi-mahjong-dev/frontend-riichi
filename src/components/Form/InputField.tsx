@@ -1,6 +1,7 @@
 import { Accessor, createEffect, Show } from "solid-js";
 
 type UsernameProps = {
+    name?: string;
     value: Accessor<string>;
     onInput: (value: string) => void;
     placeholder: string;
@@ -10,6 +11,7 @@ type UsernameProps = {
 }
 
 export default function InputField({
+    name,
     value,
     onInput,
     placeholder,
@@ -31,6 +33,7 @@ export default function InputField({
                     onInput={(e) => onInput(e.target.value)}
                     placeholder={placeholder}
                     type={typeInput}
+                    name={name}
                 />
             </div>
             <Show when={error && error()}>

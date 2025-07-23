@@ -11,6 +11,8 @@ export type User = {
 export interface SessionData {
   access_token?: string;
   refresh_token?: string;
+  expired?: number;
+  token_type?: string;
   user?: User,
 }
 
@@ -63,6 +65,8 @@ export async function setSession(sessionData: SessionData) {
     data.access_token = sessionData.access_token;
     data.refresh_token = sessionData.refresh_token;
     data.user = sessionData.user;
+    data.expired = sessionData.expired;
+    data.token_type = sessionData.token_type;
 
     return data;
   });
@@ -77,6 +81,8 @@ export async function terminateSession() {
     data.access_token = undefined;
     data.refresh_token = undefined;
     data.user = undefined;
+    data.expired = undefined;
+    data.token_type = undefined;
 
     return data;
   });

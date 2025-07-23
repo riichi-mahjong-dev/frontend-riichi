@@ -19,5 +19,5 @@ export default createHandler(() => (
     )}
   />
 ), {
-  mode: "stream"
+  mode: "async"
 });

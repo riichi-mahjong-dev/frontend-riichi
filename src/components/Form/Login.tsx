@@ -1,8 +1,10 @@
-import { useAction } from "@solidjs/router";
+import { useAction, useSubmission } from "@solidjs/router";
 import InputField from "./InputField";
 import { useForm } from "~/compose/useForm";
 import { min } from "~/utils/validations";
-import { INITIAL_FIELD, loginSubmit, USER } from "~/lib/admin";
+import { INITIAL_FIELD, USER } from "~/lib/admin";
+import { loginUser } from "~/api/auth";
+import { createEffect, Show } from "solid-js";
 
 type LoginProps = {
     type: USER,
@@ -23,17 +25,14 @@ export default function LoginForm({
         ],
     });
 
-    const loginAction = useAction(loginSubmit);
+    const submission = useSubmission(loginUser);
+    const loginAction = useAction(loginUser);
 
     return (
         <form
             class="flex flex-col lg:w-2/3 w-full gap-6 items-center rounded p-8"
             onSubmit={handleSubmit(async ({username, password}) => {
-                const response = await loginAction(username, password, type);
-
-                if (response.status === 'error' && response.field) {
-                    fields[response.field].setError(response.message);
-                }
+                await loginAction(username, password, type);
             })}
         >
             <label class="text-left w-full">
@@ -55,6 +54,11 @@ export default function LoginForm({
                 type="submit">
                 Login
             </button>
+            <Show when={submission.result}>
+                <span class="text-left text-rose-700">
+                    {submission.result}
+                </span>
+            </Show>
         </form>
     );
 }

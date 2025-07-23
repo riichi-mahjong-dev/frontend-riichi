@@ -1,6 +1,8 @@
 import { createAsync } from "@solidjs/router";
-import LoginForm from "~/components/Form/Login";
+import { clientOnly } from "@solidjs/start";
 import { loginProtected } from "~/lib/auth/session";
+
+const LoginForm = clientOnly(() => import("~/components/Form/Login"));
 
 export default function Login() {
   createAsync(() => loginProtected());

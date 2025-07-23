@@ -1,10 +1,40 @@
 import { clientOnly } from "@solidjs/start";
-import { Suspense } from "solid-js";
+import { createResource, createSignal, For, onMount, Suspense } from "solid-js";
+import { PaginateRequest } from "~/api/base";
+import { getMatches } from "~/api/match";
+import { getParlours } from "~/api/parlour";
+import { getPlayers } from "~/api/player";
 
 const CardComp = clientOnly(() => import("~/components/Card"));
 const PlayerCardComp = clientOnly(() => import("~/components/Card/Player"));
 
 export default function HomeApp() {
+  const [sortRank, setSortRank] = createSignal<string>('-rank');
+
+  const params: PaginateRequest = {
+    page: 1,
+    pageSize: 4,
+    search: '',
+  };
+
+  const [ranks, {refetch: refetchRank}] = createResource(() => ({...params, sort: sortRank()}), getPlayers, {
+    ssrLoadFrom: 'initial'
+  });
+
+  const [matches, {refetch: refetchMatch}] = createResource(() => ({...params, sort: '-created_at'}), getMatches, {
+    ssrLoadFrom: 'initial'
+  });
+
+  const [parlours, {refetch: refetchParlour}] = createResource(() => ({...params, sort: '-created_at'}), getParlours, {
+    ssrLoadFrom: 'initial'
+  });
+
+  onMount(() => {
+    refetchMatch();
+    refetchRank();
+    refetchParlour();
+  });
+
   return (
     <main class="flex flex-col w-full text-center mx-auto text-gray-700 bg-content">
         <div class="flex w-full bg-mj-green-400">
@@ -22,10 +52,11 @@ export default function HomeApp() {
               </div>
               <div class="flex w-full scrollable-container">
                 <div class="flex flex-row min-w-[930px] lf:gap-2 gap-4 py-10 px-4">
-                  <PlayerCardComp id={1} name="Kristian Ruben" mr={1000}/>
-                  <PlayerCardComp id={2} name="Kristian Ruben" mr={1000}/>
-                  <PlayerCardComp id={3} name="Kristian Ruben" mr={1000}/>
-                  <PlayerCardComp id={4} name="Kristian Ruben" mr={1000}/>
+                  <For each={ranks()?.list}>
+                    {(item, index) => (
+                      <PlayerCardComp id={item.id} name={item.name} mr={item.rank}/>
+                    )}
+                  </For>
                 </div>
               </div>
             </Suspense>
@@ -40,10 +71,11 @@ export default function HomeApp() {
               </div>
               <div class="flex w-full scrollable-container">
                 <div class="flex flex-row min-w-[930px] lf:gap-2 gap-4 py-10">
-                    <CardComp/>
-                    <CardComp/>
-                    <CardComp/>
-                    <CardComp/>
+                  <For each={matches()?.list}>
+                    {(item, index) => 
+                      <CardComp/>
+                    }
+                  </For>
                 </div>
               </div>
             </Suspense>
@@ -58,10 +90,11 @@ export default function HomeApp() {
               </div>
               <div class="flex w-full scrollable-container">
                 <div class="flex flex-row min-w-[930px] lf:gap-2 gap-4 py-10">
-                    <CardComp/>
-                    <CardComp/>
-                    <CardComp/>
-                    <CardComp/>
+                  <For each={parlours()?.list}>
+                    {(item, index) => 
+                      <CardComp/>
+                    }
+                  </For>
                 </div>
               </div>
             </Suspense>

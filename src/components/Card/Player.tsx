@@ -1,6 +1,6 @@
 type PlayerProps = {
   id: number;
-  name: string;
+  name?: string;
   mr: number;
   country?: string;
   province?: string;
@@ -17,7 +17,7 @@ export default function PlayerCard({
     <a href={`/player/${id}`} class="flex flex-col w-70 h-70 rounded shadow-lg bg-mj-green">
       <div class="flex flex-col items-center flex-grow gap-4 bg-white px-4 py-8">
           <div class="flex items-center justify-center w-20 h-20 rounded-full bg-mj-green text-white text-2xl font-bold">
-            KR
+            {name?.slice(0, 2).toUpperCase() ?? ''}
           </div>
           <div class="text-xl font-bold text-mj-green">
             { name }
