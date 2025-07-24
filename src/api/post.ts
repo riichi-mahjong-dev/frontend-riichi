@@ -1,3 +1,6 @@
+import { action, query } from "@solidjs/router";
+import { ErrorResponse, fetchApi, PaginateMeta, PaginateRequest, PaginateResponse, ResponseData, toQueryParams } from "./base";
+
 export type Post = {
   id: number;
   title: string;
@@ -7,3 +10,83 @@ export type Post = {
   updated_at: Date;
   slug: string;
 }
+
+export type PlayerResponse = {
+  message: string;
+  list: Array<Post>;
+  meta?: PaginateMeta;
+}
+
+export const getPlayers = query(async (paginateRequest: PaginateRequest): Promise<PlayerResponse> => {
+  "use server";
+  const query = toQueryParams(paginateRequest);
+  const res = await fetchApi<PaginateResponse<Post>>(`/api/posts?${query}`);
+
+  if (!res.success) {
+    return {
+      message: (res as ErrorResponse).error,
+      list: [],
+    };
+  }
+
+  const response = (res as PaginateResponse<Post>);
+  return {
+    message: response.message,
+    list: response.data,
+    meta: response.meta,
+  };
+}, "player-list");
+
+export const getPlayerById = query(async (id: number): Promise<Post|null> => {
+  "use server";
+
+  const res = await fetchApi<ResponseData<Post>>(`/api/posts/${id}`);
+
+  if (!res.success) {
+    return null;
+  }
+
+  return (res as ResponseData<Post>).data;
+}, 'player-detail');
+
+export const deletePlayerById = action(async (id: number): Promise<boolean> => {
+  "use server";
+
+  const res = await fetchApi<ResponseData<null>>(`/api/posts/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!res.success) {
+    return false;
+  }
+
+  return true;
+}, "player-delete");
+
+export const createPlayer = action(async (): Promise<Post> => {
+  "use server";
+
+  const res = await fetchApi<ResponseData<Post>>(`/api/posts`, {
+    method: 'POST'
+  });
+
+  if (!res.success) {
+    
+  }
+
+  return (res as ResponseData<Post>).data;
+}, "player-create");
+
+export const updatePlayer = action(async (id: number): Promise<Post> => {
+  "use server";
+
+  const res = await fetchApi<ResponseData<Post>>(`/api/posts/${id}`, {
+    method: 'PUT'
+  });
+
+  if (!res.success) {
+    
+  }
+
+  return (res as ResponseData<Post>).data;
+}, "player-update");

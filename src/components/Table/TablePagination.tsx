@@ -1,83 +1,63 @@
 
-import { createSignal, createMemo, For, Show } from "solid-js";
+import { createSignal, createMemo, For, Show, onMount } from "solid-js";
 import Input from "../../components/Form/InputField";
 import Button from "../../components/ui/Button";
 import ChevronUp from "lucide-solid/icons/chevron-up";
 import ChevronDown from "lucide-solid/icons/chevron-down";
 import Pencil from "lucide-solid/icons/pencil";
 import Trash2 from "lucide-solid/icons/trash-2";
+import { usePagination } from "~/compose/createSearchResource";
+import { getPlayers } from "~/api/player";
 
-type User = {
+type Player = {
   id: number;
   name: string;
-  email: string;
-  role: string;
+  username: string;
+  rank: string;
 };
 
-const data: User[] = [
-  { id: 1, name: "Alice", email: "alice@example.com", role: "Admin" },
-  { id: 2, name: "Bob", email: "bob@example.com", role: "User" },
-  { id: 3, name: "Charlie", email: "charlie@example.com", role: "Editor" },
-  // Add more data here...
-];
-
 export default function TablePagination() {
-  const [search, setSearch] = createSignal("");
-  const [page, setPage] = createSignal(1);
-  const pageSize = 5;
-
-  const [sortField, setSortField] = createSignal<keyof User>("id");
-  const [sortOrder, setSortOrder] = createSignal<"asc" | "desc">("asc");
-
-  const filteredData = createMemo(() => {
-    const term = search().toLowerCase();
-    return data.filter((d) =>
-      Object.values(d).some((val) =>
-        String(val).toLowerCase().includes(term)
-      )
-    );
+  const {
+    data,
+    setSort,
+    sort,
+    setSearch,
+    page,
+    setPage,
+  } = usePagination({
+    fetcher: getPlayers,
+    pageSize: 10,
+    initialSort: "-rank",
+    debounceMs: 300,
+    scrollData: false,
   });
 
-  const sortedData = createMemo(() => {
-    const field = sortField();
-    const order = sortOrder();
-    return [...filteredData()].sort((a, b) => {
-      if (a[field] < b[field]) return order === "asc" ? -1 : 1;
-      if (a[field] > b[field]) return order === "asc" ? 1 : -1;
-      return 0;
-    });
-  });
+  const toggleSort = (field: keyof Player) => {
+    let sortField = sort();
+    let order = 'asc';
+    if (sortField[0] === '-') {
+      sortField = sortField.slice(1);
+      order = 'desc';
+    }
 
-  const paginatedData = createMemo(() => {
-    const start = (page() - 1) * pageSize;
-    return sortedData().slice(start, start + pageSize);
-  });
-
-  const totalPages = createMemo(() =>
-    Math.ceil(filteredData().length / pageSize)
-  );
-
-  const toggleSort = (field: keyof User) => {
-    if (sortField() === field) {
-      setSortOrder(sortOrder() === "asc" ? "desc" : "asc");
+    if (sortField === field) {
+      setSort(order === 'asc' ? `-${sortField}` : sortField);
     } else {
-      setSortField(field);
-      setSortOrder("asc");
+      setSort(sortField);
     }
   };
 
-  const headers: { key: keyof User; label: string }[] = [
+  const headers: { key: keyof Player; label: string }[] = [
     { key: "id", label: "ID" },
     { key: "name", label: "Name" },
-    { key: "email", label: "Email" },
-    { key: "role", label: "Role" },
+    { key: "username", label: "Username" },
+    { key: "rank", label: "Rank" },
   ];
 
   return (
     <div class="p-4">
       <Input
         placeholder="Search..."
-        value={search}
         onInput={setSearch}
       />
 
@@ -93,7 +73,7 @@ export default function TablePagination() {
                   >
                     <div class="flex items-center gap-1">
                       {header.label}
-                      <Show when={sortField() === header.key}>
+                      <Show when={sort() === header.key}>
                         {sortOrder() === "asc" ? (
                           <ChevronUp size={14} />
                         ) : (
@@ -108,17 +88,17 @@ export default function TablePagination() {
             </tr>
           </thead>
           <tbody>
-            <For each={paginatedData()}>
-              {(user, index) => (
+            <For each={data()}>
+              {(player, index) => (
                 <tr
                   class={`${
                     index() % 2 === 0 ? "bg-white" : "bg-gray-50"
                   } hover:bg-gray-100 transition`}
                 >
-                  <td class="px-5 py-3">{user.id}</td>
-                  <td class="px-5 py-3">{user.name}</td>
-                  <td class="px-5 py-3">{user.email}</td>
-                  <td class="px-5 py-3">{user.role}</td>
+                  <td class="px-5 py-3">{player.id}</td>
+                  <td class="px-5 py-3">{player.name}</td>
+                  <td class="px-5 py-3">{player.username}</td>
+                  <td class="px-5 py-3">{player.rank}</td>
                   <td class="px-5 py-3">
                     <div class="flex gap-2">
                       <Button size="sm" variant="outline" class="hover:bg-gray-200">
@@ -137,7 +117,6 @@ export default function TablePagination() {
       </div>
       <div class="flex items-center justify-between mt-4">
         <span class="text-sm text-gray-500">
-          Page {page()} of {totalPages()}
         </span>
         <div class="flex gap-2">
           <Button
@@ -149,10 +128,6 @@ export default function TablePagination() {
           </Button>
           <Button
             variant="outline"
-            onClick={() =>
-              setPage((p) => Math.min(p + 1, totalPages()))
-            }
-            disabled={page() === totalPages()}
           >
             Next
           </Button>

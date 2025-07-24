@@ -3,7 +3,7 @@ import { getSessionUser } from "~/lib/auth/session";
 export type PaginateRequest = {
   page: number;
   pageSize: number;
-  search: string;
+  search?: string;
   sort?: string;
   filter?: {[key:string]:string};
 }
@@ -11,9 +11,9 @@ export type PaginateRequest = {
 export function toQueryParams(req: PaginateRequest): string {
   const params = new URLSearchParams();
 
-  params.set("page[number]", req.page.toString());
-  params.set("page[size]", req.pageSize.toString());
-  params.set("search", req.search);
+  params.set("page[number]", (req.page ?? 1).toString());
+  params.set("page[size]", (req.pageSize ?? 10).toString());
+  params.set("search", req.search ?? '');
   params.set("sort", req.sort ?? '-id');
 
   for (const key in req.filter) {

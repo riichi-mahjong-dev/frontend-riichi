@@ -39,13 +39,11 @@ export default function LoginForm({
               <h1 class="text-5xl text-mj-green-400 dark:text-white font-bold">Login</h1>
             </label>
             <InputField
-                value={fields['username'].value}
                 onInput={fields['username'].setValue}
                 error={fields['username'].error}
                 placeholder="Type Username..."/>
             <InputField
                 typeInput="password"
-                value={fields['password'].value}
                 onInput={fields['password'].setValue}
                 error={fields['password'].error}
                 placeholder="Type Password..."/>
