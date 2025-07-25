@@ -4,6 +4,7 @@ import { Province } from "./province";
 
 export type Parlour = {
   id: number;
+  name: string;
   country: string;
   province_id: number;
   address: string;

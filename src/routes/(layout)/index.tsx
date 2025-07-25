@@ -5,7 +5,8 @@ import { getMatches } from "~/api/match";
 import { getParlours } from "~/api/parlour";
 import { getPlayers } from "~/api/player";
 
-const CardComp = clientOnly(() => import("~/components/Card"));
+const MatchCardComp = clientOnly(() => import("~/components/Card/Match"));
+const ParlourCardComp = clientOnly(() => import("~/components/Card/Parlour"));
 const PlayerCardComp = clientOnly(() => import("~/components/Card/Player"));
 
 export default function HomeApp() {
@@ -25,7 +26,7 @@ export default function HomeApp() {
     ssrLoadFrom: 'initial'
   });
 
-  const [parlours, {refetch: refetchParlour}] = createResource(() => ({...params, sort: '-created_at'}), getParlours, {
+  const [parlours, {refetch: refetchParlour}] = createResource(() => ({...params, sort: '-parlours.created_at'}), getParlours, {
     ssrLoadFrom: 'initial'
   });
 
@@ -50,11 +51,16 @@ export default function HomeApp() {
                 </h2>
                 <a href="/ranked" class="text-2xl text-mj-green-300">See more</a>
               </div>
-              <div class="flex w-full scrollable-container">
-                <div class="flex flex-row min-w-[930px] lf:gap-2 gap-4 py-10 px-4">
+              <div class="flex w-full">
+                <div class="flex flex-col w-full lf:gap-2 gap-4 py-10">
                   <For each={ranks()?.list}>
                     {(item, index) => (
-                      <PlayerCardComp id={item.id} name={item.name} mr={item.rank}/>
+                      <PlayerCardComp
+                        id={item.id}
+                        name={item.name}
+                        username={item.username}
+                        mr={item.rank}
+                      />
                     )}
                   </For>
                 </div>
@@ -69,12 +75,17 @@ export default function HomeApp() {
                 </h2>
                 <a href="/matches" class="text-2xl text-mj-green-300">See more</a>
               </div>
-              <div class="flex w-full scrollable-container">
-                <div class="flex flex-row min-w-[930px] lf:gap-2 gap-4 py-10">
+              <div class="flex w-full">
+                <div class="flex flex-col w-full lf:gap-2 gap-4 py-10">
                   <For each={matches()?.list}>
-                    {(item, index) => 
-                      <CardComp/>
-                    }
+                    {(item, index) => (
+                      <MatchCardComp
+                        id={item.id}
+                        players={item.players}
+                        playing_at={item.playing_at}
+                        parlour_name={item.parlour?.name ?? ""}
+                      />
+                    )}
                   </For>
                 </div>
               </div>
@@ -88,11 +99,17 @@ export default function HomeApp() {
                 </h2>
                 <a href="/parlour" class="text-2xl text-mj-green-300">See more</a>
               </div>
-              <div class="flex w-full scrollable-container">
-                <div class="flex flex-row min-w-[930px] lf:gap-2 gap-4 py-10">
+              <div class="flex w-full">
+                <div class="flex flex-col w-full lf:gap-2 gap-4 py-10">
                   <For each={parlours()?.list}>
                     {(item, index) => 
-                      <CardComp/>
+                      <ParlourCardComp
+                        id={item.id}
+                        name={item.name}
+                        country={item.country}
+                        province={item.province?.name ?? ""}
+                        address={item.address}
+                      />
                     }
                   </For>
                 </div>

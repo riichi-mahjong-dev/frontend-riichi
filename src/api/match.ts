@@ -12,6 +12,7 @@ export type Match = {
   updated_at: Date;
   players: Array<Player>;
   parlour?: Parlour;
+  playing_at: string;
 }
 
 export type MatchResponse = {

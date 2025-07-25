@@ -47,9 +47,9 @@ export default function RankedPage() {
     <main class="flex flex-col w-full text-center mx-auto text-gray-700 bg-content">
       <Search onInput={(value: string) => setSearch(value)}/>
       <Show when={!loading()} fallback={<div>Loading</div>}>
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:w-[930px] w-full xl:px-0 px-8 py-8 mt-20 mx-auto bg-content">
+        <div class="flex flex-col gap-2 xl:w-[930px] w-full xl:px-0 px-8 py-8 mt-20 mx-auto bg-content">
           <For each={data()}>
-            {(item, index) => (
+            {(item) => (
               <PlayerCard
                 id={item.id}
                 name={item.name}
