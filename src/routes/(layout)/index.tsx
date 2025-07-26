@@ -11,15 +11,13 @@ const ParlourCardComp = clientOnly(() => import("~/components/Card/Parlour"));
 const PlayerCardComp = clientOnly(() => import("~/components/Card/Player"));
 
 export default function HomeApp() {
-  const [sortRank, setSortRank] = createSignal<string>('-rank');
-
   const params: PaginateRequest = {
     page: 1,
-    pageSize: 4,
+    pageSize: 5,
     search: '',
   };
 
-  const [ranks, {refetch: refetchRank}] = createResource(() => ({...params, sort: sortRank()}), getPlayers, {
+  const [ranks, {refetch: refetchRank}] = createResource(() => ({...params, sort: '-rank'}), getPlayers, {
     ssrLoadFrom: 'initial'
   });
 
@@ -47,14 +45,13 @@ export default function HomeApp() {
             <Suspense fallback={<div>Loading...</div>}>
               <div class="flex justify-between items-center">
                 <h2>
-                  <label class="text-4xl text-mj-green-400">Rankings</label>
+                  <label class="text-4xl font-bold text-mj-green-400">Rankings</label>
                 </h2>
-                <a href="/ranked" class="text-2xl text-mj-green-300">See more</a>
               </div>
               <div class="flex w-full">
                 <div class="flex flex-col w-full lf:gap-2 gap-4 py-10">
                   <For each={ranks()?.list}>
-                    {(item, index) => (
+                    {(item) => (
                       <PlayerCardComp
                         id={item.id}
                         name={item.name}
@@ -71,14 +68,13 @@ export default function HomeApp() {
             <Suspense fallback={<div>Loading...</div>}>
               <div class="flex justify-between items-center">
                 <h2>
-                  <label class="text-4xl text-mj-green-400">Matches</label>
+                  <label class="text-4xl font-bold text-mj-green-400">Matches</label>
                 </h2>
-                <a href="/match" class="text-2xl text-mj-green-300">See more</a>
               </div>
               <div class="flex w-full">
                 <div class="flex flex-col w-full lf:gap-2 gap-4 py-10">
                   <For each={matches()?.list}>
-                    {(item, index) => (
+                    {(item) => (
                       <MatchCardComp
                         id={item.id}
                         players={item.match_players}
@@ -96,14 +92,13 @@ export default function HomeApp() {
             <Suspense fallback={<div>Loading...</div>}>
               <div class="flex justify-between items-center">
                 <h2>
-                  <label class="text-4xl text-mj-green-400">Parlours</label>
+                  <label class="text-4xl font-bold text-mj-green-400">Parlours</label>
                 </h2>
-                <a href="/parlour" class="text-2xl text-mj-green-300">See more</a>
               </div>
               <div class="flex w-full">
                 <div class="flex flex-col w-full lf:gap-2 gap-4 py-10">
                   <For each={parlours()?.list}>
-                    {(item, index) => 
+                    {(item) => 
                       <ParlourCardComp
                         id={item.id}
                         name={item.name}

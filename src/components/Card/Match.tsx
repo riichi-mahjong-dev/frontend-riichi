@@ -1,10 +1,11 @@
 import { For } from "solid-js";
 import { MatchPlayer } from "~/api/match";
 import { Player } from "~/api/player";
+import { writeDate } from "~/utils/common";
 
 type MatchProps = {
   id: number;
-  playing_at: string;
+  playing_at: Date;
   players: MatchPlayer[];
   parlour_name: string;
   created_by?: Player;
@@ -43,7 +44,7 @@ export default function MatchCard({
         </div>
         <div class="flex items-center gap-2">
           <span class="text-gray-500 dark:text-gray-400 font-medium">📅 Date:</span>
-          <span>{playing_at}</span>
+          <span>{writeDate(new Date(playing_at))}</span>
         </div>
         <div class="flex items-center gap-2">
           <span class="text-gray-500 dark:text-gray-400 font-medium">👤 Creator:</span>

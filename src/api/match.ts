@@ -24,7 +24,7 @@ export type Match = {
   updated_at: Date;
   match_players: Array<MatchPlayer>;
   parlour?: Parlour;
-  playing_at: string;
+  playing_at: Date;
   creator: Player;
 }
 

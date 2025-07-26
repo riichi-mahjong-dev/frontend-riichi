@@ -26,14 +26,6 @@ export default function HomeLayout(props: RouteSectionProps) {
               >
               Login
               </div>
-              <div
-                class="flex py-2 px-12 text-black justify-center items-center h-12 text-xl font-bold bg-mj-green-300 text-white rounded cursor-pointer"
-                onClick={async () => {
-                  await logoutAction();
-                }}
-              >
-              Logout
-              </div>
             </div>
           </div>
         </div>
