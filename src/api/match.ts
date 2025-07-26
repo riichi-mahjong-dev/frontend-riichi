@@ -66,7 +66,7 @@ export const getMatchById = query(async (id: number): Promise<Match|null> => {
   }
 
   return (res as ResponseData<Match>).data;
-}, 'player-detail');
+}, 'match-detail');
 
 export const deleteMatchById = action(async (id: number): Promise<boolean> => {
   "use server";
