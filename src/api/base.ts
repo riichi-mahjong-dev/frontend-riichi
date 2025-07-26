@@ -30,6 +30,7 @@ export type PaginateMeta = {
   per_page: number;
   total: number;
   total_pages: number;
+  has_more: boolean;
 }
 
 export type ResponseData<T> = {

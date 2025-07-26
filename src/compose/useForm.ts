@@ -15,7 +15,7 @@ type UseFormReturn<T> = {
     handleSubmit: (onSubmit: (value: T) => void) => (e: Event) => void;
 }
 
-export function useForm<T extends Record<string, string>>(initialValues: T, rules: Record<keyof T, ValidationRule[]>): UseFormReturn<T> {
+export function useForm<T extends Record<string, any>>(initialValues: T, rules: Record<keyof T, ValidationRule[]>): UseFormReturn<T> {
     const fields: Record<keyof T, FieldState> = {} as Record<keyof T, FieldState>;
 
     for (const key in initialValues) {

@@ -1,10 +1,10 @@
 import { For, onCleanup, onMount, Show } from "solid-js";
-import { getPlayers } from "~/api/player";
-import PlayerCard from "~/components/Card/Player";
 import { usePagination } from "~/compose/createSearchResource";
 import Search from "../Search";
+import ParlourCard from "../Card/Parlour";
+import { getParlours } from "~/api/parlour";
 
-export default function RankedPage() {
+export default function ParlourPage() {
   const {
     data,
     setSearch,
@@ -12,9 +12,9 @@ export default function RankedPage() {
     hasMore,
     loading,
   } = usePagination({
-    fetcher: getPlayers,
+    fetcher: getParlours,
     pageSize: 10,
-    initialSort: "-rank",
+    initialSort: "-id",
     debounceMs: 300,
     scrollData: true,
   });
@@ -49,11 +49,13 @@ export default function RankedPage() {
       <div class="flex flex-col gap-10 xl:w-[930px] w-full xl:px-0 px-8 py-8 mt-20 mx-auto bg-content">
         <For each={data()}>
           {(item) => (
-            <PlayerCard
+            <ParlourCard
               id={item.id}
               name={item.name}
-              username={item.username}
-              rank={item.rank}/>
+              country={item.country}
+              province={item.province?.name ?? ""}
+              address={item.address}
+            />
           )}
         </For>
         <Show when={loading()}>
@@ -63,3 +65,4 @@ export default function RankedPage() {
     </main>
   );
 }
+

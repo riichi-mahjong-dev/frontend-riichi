@@ -1,20 +1,18 @@
 import { For, onCleanup, onMount, Show } from "solid-js";
-import { getPlayers } from "~/api/player";
-import PlayerCard from "~/components/Card/Player";
 import { usePagination } from "~/compose/createSearchResource";
-import Search from "../Search";
+import { getMatches } from "~/api/match";
+import MatchCard from "../Card/Match";
 
-export default function RankedPage() {
+export default function MatchPage() {
   const {
     data,
-    setSearch,
     setPage,
     hasMore,
     loading,
   } = usePagination({
-    fetcher: getPlayers,
+    fetcher: getMatches,
     pageSize: 10,
-    initialSort: "-rank",
+    initialSort: "-id",
     debounceMs: 300,
     scrollData: true,
   });
@@ -45,15 +43,16 @@ export default function RankedPage() {
 
   return (
     <main class="flex flex-col w-full text-center mx-auto text-gray-700 bg-content">
-      <Search onInput={(value: string) => setSearch(value)}/>
       <div class="flex flex-col gap-10 xl:w-[930px] w-full xl:px-0 px-8 py-8 mt-20 mx-auto bg-content">
         <For each={data()}>
           {(item) => (
-            <PlayerCard
+            <MatchCard
               id={item.id}
-              name={item.name}
-              username={item.username}
-              rank={item.rank}/>
+              players={item.match_players}
+              playing_at={item.playing_at}
+              parlour_name={item.parlour?.name ?? ""}
+              created_by={item.creator}
+            />
           )}
         </For>
         <Show when={loading()}>

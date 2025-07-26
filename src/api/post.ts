@@ -14,7 +14,7 @@ export type Post = {
 export type PlayerResponse = {
   message: string;
   list: Array<Post>;
-  meta?: PaginateMeta;
+  has_more: boolean;
 }
 
 export const getPlayers = query(async (paginateRequest: PaginateRequest): Promise<PlayerResponse> => {
@@ -26,6 +26,7 @@ export const getPlayers = query(async (paginateRequest: PaginateRequest): Promis
     return {
       message: (res as ErrorResponse).error,
       list: [],
+      has_more: false,
     };
   }
 
@@ -33,7 +34,7 @@ export const getPlayers = query(async (paginateRequest: PaginateRequest): Promis
   return {
     message: response.message,
     list: response.data,
-    meta: response.meta,
+    has_more: response.meta.has_more,
   };
 }, "player-list");
 

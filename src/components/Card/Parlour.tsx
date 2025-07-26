@@ -8,7 +8,7 @@ type ParlourProps = {
   address: string;
 }
 
-export default function PlayerCard({
+export default function ParlourCard({
   id,
   name,
   country,
@@ -16,22 +16,17 @@ export default function PlayerCard({
   address,
 }: ParlourProps) {
   return (
-    <a href={`/parlour/${id}`} class="flex flex-row w-full h-26 rounded shadow-lg bg-mj-green">
-      <div class="flex items-center px-4">
-        <House color="#fff"/>
+    <a href={`/parlour/${id}`} class="w-full max-w-[930px] bg-white dark:bg-gray-800 shadow-md border border-gray-200 dark:border-gray-700 rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      {/* Left: Name */}
+      <div class="flex-1">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white">{name}</h2>
+        <div class="text-sm text-gray-500 dark:text-gray-400">{country} — {province}</div>
       </div>
-      <div class="flex flex-row items-center flex-grow min-w-0 gap-4 bg-white px-4 py-2">
-          <div class="shrink-0 flex items-center justify-center bg-mj-green text-white text-2xl font-bold">
-            {name}
-          </div>
-          <div class="flex flex-col items-start">
-            <div class="text-2xl font-bold text-mj-green truncate">
-              { country }
-            </div>
-            <div class="text-lg text-mj-green truncate">
-              { province }
-            </div>
-          </div>
+
+      {/* Right: Address */}
+      <div class="flex items-center text-sm text-gray-700 dark:text-gray-300 max-w-full md:max-w-[50%]">
+        <span class="text-gray-500 dark:text-gray-400 mr-1">📍</span>
+        <span class="truncate" title={address}>{address}</span>
       </div>
     </a>
   );

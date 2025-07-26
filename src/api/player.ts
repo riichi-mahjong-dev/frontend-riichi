@@ -1,5 +1,6 @@
 import { action, query } from "@solidjs/router";
 import { ErrorResponse, fetchApi, PaginateMeta, PaginateRequest, PaginateResponse, ResponseData, toQueryParams } from "./base";
+import { Province } from "./province";
 
 export type Player = {
   id: number;
@@ -10,12 +11,13 @@ export type Player = {
   username: string;
   created_at: Date;
   updated_at: Date;
+  province: Province;
 }
 
 export type PlayerResponse = {
   message: string;
   list: Array<Player>;
-  meta?: PaginateMeta;
+  has_more: boolean;
 }
 
 export const getPlayers = query(async (paginateRequest: PaginateRequest): Promise<PlayerResponse> => {
@@ -27,6 +29,7 @@ export const getPlayers = query(async (paginateRequest: PaginateRequest): Promis
     return {
       message: (res as ErrorResponse).error,
       list: [],
+      has_more: false,
     };
   }
 
@@ -34,7 +37,7 @@ export const getPlayers = query(async (paginateRequest: PaginateRequest): Promis
   return {
     message: response.message,
     list: response.data,
-    meta: response.meta,
+    has_more: response.meta.has_more,
   };
 }, "player-list");
 

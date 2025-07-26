@@ -3,6 +3,18 @@ import { ErrorResponse, fetchApi, PaginateRequest, PaginateResponse, ResponseDat
 import { Player } from "./player";
 import { Parlour } from "./parlour";
 
+export type MatchPlayer = {
+  id: number;
+  match_id: number;
+  player_id: number;
+  point?: number;
+  mmr_delta?: number;
+  pinalty?: number;
+  created_at: Date;
+  updated_at: Date;
+  player: Player;
+}
+
 export type Match = {
   approved_at: Date;
   id: number;
@@ -10,14 +22,16 @@ export type Match = {
   created_by: number;
   created_at: Date;
   updated_at: Date;
-  players: Array<Player>;
+  match_players: Array<MatchPlayer>;
   parlour?: Parlour;
   playing_at: string;
+  creator: Player;
 }
 
 export type MatchResponse = {
   message: string;
   list: Array<Match>;
+  has_more: boolean;
 }
 
 export const getMatches = query(async (paginateRequest: PaginateRequest): Promise<MatchResponse> => {
@@ -30,6 +44,7 @@ export const getMatches = query(async (paginateRequest: PaginateRequest): Promis
     return {
       message: (res as ErrorResponse).error,
       list: [],
+      has_more: false,
     };
   }
 
@@ -37,8 +52,9 @@ export const getMatches = query(async (paginateRequest: PaginateRequest): Promis
   return {
     message: response.message,
     list: response.data,
+    has_more: response.meta.has_more,
   };
-}, "match-list");
+}, "match-paginate");
 
 export const getMatchById = query(async (id: number): Promise<Match|null> => {
   "use server";

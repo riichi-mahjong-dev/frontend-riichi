@@ -27,13 +27,13 @@ const menus = [
     'icon': Gamepad,
     'label': 'Match',
     'to' : '/admin/match',
-    'path': ['^/admin/match$'],
+    'path': ['^/admin/match$', '^/admin/match/create$', '^/admin/match/edit/\\d+', '^/admin/match/\\d+'],
   },
   {
     'icon': House,
     'label': 'Parlour',
     'to' : '/admin/parlour',
-    'path': ['^/admin/parlour$'],
+    'path': ['^/admin/parlour$', '^/admin/parlour/create$', '^/admin/parlour/edit/\\d+', '^/admin/parlour/\\d+'],
   },
 ];
 

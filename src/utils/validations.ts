@@ -1,20 +1,24 @@
 const phoneRegex = /^\+?[0-9]{7,15}$/;
 const emailRegex =/^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-export function isNumber(val: string) {
-  if (Number.isNaN(val)) {
-    return 'not type of number';
-  }
+export function isNumber() {
+  return (val: string) => {
+    if (Number.isNaN(val)) {
+      return 'not type of number';
+    }
 
-  return null;
+    return null;
+  }
 }
 
-export function isEmail(val: string) {
-  if (!emailRegex.test(val)) {
-    return 'not type of email';
-  }
+export function isEmail() {
+  return (val: string) => {
+    if (!emailRegex.test(val)) {
+      return 'not type of email';
+    }
 
-  return null;
+    return null;
+  }
 }
 
 export function isPhoneNumber(val: string) {

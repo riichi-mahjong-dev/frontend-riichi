@@ -1,13 +1,15 @@
 import { createSignal, createEffect } from "solid-js";
 
-type Options<TFilters> = {
-  fetcher: (params: {
+export type Params<TFilters> = {
     page: number;
     pageSize: number;
     search: string;
     sort: string;
     filters: TFilters;
-  }) => Promise<any>;
+}
+
+type Options<TFilters, T> = {
+  fetcher: (params: Params<TFilters>) => Promise<{list: Array<T>; has_more: boolean;}>;
   scrollData?: boolean;
   pageSize?: number;
   initialSort?: string;
@@ -15,11 +17,11 @@ type Options<TFilters> = {
   debounceMs?: number;
 };
 
-export function usePagination<TFilters = Record<string, any>>(options: Options<TFilters>) {
-  const [data, setData] = createSignal<Array<any>>([]);
+export function usePagination<T, TFilters = Record<string, any>>(options: Options<TFilters, T>) {
+  const [data, setData] = createSignal<Array<T>>([]);
   const [loading, setLoading] = createSignal(false);
   const [error, setError] = createSignal<Error | null>(null);
-  const [finalData, setFinalData] = createSignal<boolean>(false);
+  const [hasMore, setHasMore] = createSignal<boolean>(false);
 
   const [search, setSearchRaw] = createSignal("");
   const [sort, setSort] = createSignal(options.initialSort ?? "");
@@ -31,7 +33,7 @@ export function usePagination<TFilters = Record<string, any>>(options: Options<T
   // Debounce logic
   let debounceTimer: NodeJS.Timeout | null = null;
   const setSearch = (value: string) => {
-    setFinalData(false);
+    setHasMore(false);
     if (debounceTimer) clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
       setSearchRaw(value);
@@ -53,15 +55,15 @@ export function usePagination<TFilters = Record<string, any>>(options: Options<T
       sort: sort(),
       filters: filters(),
     };
-
     const serialized = JSON.stringify(params);
     if (serialized === lastParams) return;
     lastParams = serialized;
 
-
+    setTimeout(() => {
     options
       .fetcher(params)
       .then((data) => {
+        setHasMore(data.has_more);
         if (options.scrollData) {
           setData((prev) => [...prev, ...data?.list]);
         } else {
@@ -70,12 +72,7 @@ export function usePagination<TFilters = Record<string, any>>(options: Options<T
       })
       .catch(setError)
       .finally(() => setLoading(false));
-  });
-
-  createEffect(() => {
-    if (data().length <= 0) {
-      setFinalData(true);
-    }
+    }, 1000);
   });
 
   return {
@@ -90,7 +87,7 @@ export function usePagination<TFilters = Record<string, any>>(options: Options<T
     setFilters,
     search,
     setSearch,
-    setFinalData,
-    finalData,
+    setHasMore,
+    hasMore,
   };
 }

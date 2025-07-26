@@ -14,6 +14,7 @@ export type Parlour = {
 export type ParlourResponse = {
   message: string;
   list: Array<Parlour>;
+  has_more: boolean;
 }
 
 export const getParlours = query(async (paginateRequest: PaginateRequest): Promise<ParlourResponse> => {
@@ -26,6 +27,7 @@ export const getParlours = query(async (paginateRequest: PaginateRequest): Promi
     return {
       message: (res as ErrorResponse).error,
       list: [],
+      has_more: false,
     };
   }
 
@@ -33,10 +35,11 @@ export const getParlours = query(async (paginateRequest: PaginateRequest): Promi
   return {
     message: response.message,
     list: response.data,
+    has_more: response.meta.has_more,
   };
 }, "parlour-list");
 
-export const getPlayerById = query(async (id: number): Promise<Parlour|null> => {
+export const getParlourById = query(async (id: number): Promise<Parlour|null> => {
   "use server";
 
   const res = await fetchApi<ResponseData<Parlour>>(`/api/parlours/${id}`);
@@ -48,7 +51,7 @@ export const getPlayerById = query(async (id: number): Promise<Parlour|null> => 
   return (res as ResponseData<Parlour>).data;
 }, 'parlour-detail');
 
-export const deletePlayerById = action(async (id: number): Promise<boolean> => {
+export const deleteParlourById = action(async (id: number): Promise<boolean> => {
   "use server";
 
   const res = await fetchApi<ResponseData<null>>(`/api/parlours/${id}`, {
@@ -62,7 +65,7 @@ export const deletePlayerById = action(async (id: number): Promise<boolean> => {
   return true;
 }, "parlour-delete");
 
-export const createPlayer = action(async (): Promise<Parlour> => {
+export const createParlour = action(async (): Promise<Parlour> => {
   "use server";
 
   const res = await fetchApi<ResponseData<Parlour>>(`/api/parlours`, {
@@ -76,7 +79,7 @@ export const createPlayer = action(async (): Promise<Parlour> => {
   return (res as ResponseData<Parlour>).data;
 }, "parlour-create");
 
-export const updatePlayer = action(async (id: number): Promise<Parlour> => {
+export const updateParlour = action(async (id: number): Promise<Parlour> => {
   "use server";
 
   const res = await fetchApi<ResponseData<Parlour>>(`/api/parlours/${id}`, {

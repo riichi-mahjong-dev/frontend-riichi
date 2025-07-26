@@ -1,3 +1,4 @@
+import { Meta, Title } from "@solidjs/meta";
 import { clientOnly } from "@solidjs/start";
 import { createResource, createSignal, For, onMount, Suspense } from "solid-js";
 import { PaginateRequest } from "~/api/base";
@@ -37,11 +38,10 @@ export default function HomeApp() {
   });
 
   return (
-    <main class="flex flex-col w-full text-center mx-auto text-gray-700 bg-content">
-        <div class="flex w-full bg-mj-green-400">
-          <div class="h-[350px]">
-          </div>
-        </div>
+    <>
+      <Title>Mahjong Indonesia</Title>
+      <Meta name="description" content="Mahjong Indonesia Match" />
+      <main class="flex flex-col w-full text-center mx-auto text-gray-700 bg-content">
         <div class="flex flex-col gap-4 xl:w-[930px] w-full xl:px-0 px-8 py-8 mx-auto bg-content">
           <div class="flex flex-col">
             <Suspense fallback={<div>Loading...</div>}>
@@ -59,7 +59,7 @@ export default function HomeApp() {
                         id={item.id}
                         name={item.name}
                         username={item.username}
-                        mr={item.rank}
+                        rank={item.rank}
                       />
                     )}
                   </For>
@@ -73,7 +73,7 @@ export default function HomeApp() {
                 <h2>
                   <label class="text-4xl text-mj-green-400">Matches</label>
                 </h2>
-                <a href="/matches" class="text-2xl text-mj-green-300">See more</a>
+                <a href="/match" class="text-2xl text-mj-green-300">See more</a>
               </div>
               <div class="flex w-full">
                 <div class="flex flex-col w-full lf:gap-2 gap-4 py-10">
@@ -81,9 +81,10 @@ export default function HomeApp() {
                     {(item, index) => (
                       <MatchCardComp
                         id={item.id}
-                        players={item.players}
+                        players={item.match_players}
                         playing_at={item.playing_at}
                         parlour_name={item.parlour?.name ?? ""}
+                        created_by={item.creator}
                       />
                     )}
                   </For>
@@ -118,5 +119,6 @@ export default function HomeApp() {
           </div>
         </div>
       </main>
+    </>
   );
 }
