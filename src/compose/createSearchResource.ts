@@ -59,7 +59,6 @@ export function usePagination<T, TFilters = Record<string, any>>(options: Option
     if (serialized === lastParams) return;
     lastParams = serialized;
 
-    setTimeout(() => {
     options
       .fetcher(params)
       .then((data) => {
@@ -72,7 +71,6 @@ export function usePagination<T, TFilters = Record<string, any>>(options: Option
       })
       .catch(setError)
       .finally(() => setLoading(false));
-    }, 1000);
   });
 
   return {

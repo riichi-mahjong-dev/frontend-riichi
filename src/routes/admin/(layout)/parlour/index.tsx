@@ -1,6 +1,11 @@
 import { clientOnly } from "@solidjs/start";
-import { getParlours } from "~/api/parlour";
+import { getParlours, Parlour } from "~/api/parlour";
+import Button from "~/components/ui/Button";
 import { writeDate } from "~/utils/common";
+import Pencil from "lucide-solid/icons/pencil";
+import Trash2 from "lucide-solid/icons/trash-2";
+import Eye from "lucide-solid/icons/eye";
+import { useNavigate } from "@solidjs/router";
 
 const TablePagination = clientOnly(() => import("~/components/Table/TablePagination"));
 
@@ -12,6 +17,8 @@ const headers: { key: string; label: string }[] = [
 ];
 
 export default function ParlourHome() {
+  const navigate = useNavigate();
+
   return (
     <div class="bg-white p-8 rounded">
       <TablePagination
@@ -24,6 +31,43 @@ export default function ParlourHome() {
             return writeDate(new Date(value));
           }
           return value;
+        }}
+        renderActions={ (data: unknown, index: number) => {
+          const parlour = data as Parlour;
+          return (
+            <div class="flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                class="hover:bg-gray-200"
+                onClick={() => {
+                  navigate(`/admin/parlour/${parlour.id}`)
+                }}
+              >
+                <Eye size={16} />
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                class="hover:bg-gray-200"
+                onClick={() => {
+                  navigate(`/admin/parlour/${parlour.id}/edit`)
+                }}
+              >
+                <Pencil size={16} />
+              </Button>
+              <Button
+                size="sm"
+                variant="destructive"
+                class="hover:bg-red-100"
+                onClick={() => {
+                  navigate(`/admin/parlour/${parlour.id}`)
+                }}
+              >
+                <Trash2 size={16} />
+              </Button>
+            </div>
+          );
         }}
       />
     </div>

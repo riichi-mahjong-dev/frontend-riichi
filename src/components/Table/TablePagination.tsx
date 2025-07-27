@@ -1,9 +1,7 @@
 
-import { For, Show } from "solid-js";
+import { For, JSX, Show } from "solid-js";
 import Input from "../../components/Form/InputField";
 import Button from "../../components/ui/Button";
-import Pencil from "lucide-solid/icons/pencil";
-import Trash2 from "lucide-solid/icons/trash-2";
 import { Params, usePagination } from "~/compose/createSearchResource";
 
 export type TablePaginationProps<T, TFilters> = {
@@ -12,16 +10,18 @@ export type TablePaginationProps<T, TFilters> = {
   sort: string;
   searchAble: boolean;
   setData: (key: string, value: string) => string;
+  renderActions?: (row: T, index: number) => JSX.Element;
 }
 
-export default function TablePagination<T, TFilters>(props: TablePaginationProps<T, TFilters>) {
+const TablePagination = <T, TFilters>(props: TablePaginationProps<T, TFilters>) => {
   const {
     data,
     setSearch,
     page,
     setPage,
     hasMore,
-  } = usePagination({
+    loading,
+  } = usePagination<T, TFilters>({
     fetcher: props.fetcher,
     pageSize: 5,
     initialSort: props.sort,
@@ -58,7 +58,7 @@ export default function TablePagination<T, TFilters>(props: TablePaginationProps
           </thead>
           <tbody>
             <For each={data()}>
-              {(player, index) => (
+              {(data, index) => (
                 <tr
                   class={`${
                     index() % 2 === 0 ? "bg-white" : "bg-gray-50"
@@ -69,7 +69,7 @@ export default function TablePagination<T, TFilters>(props: TablePaginationProps
                       const keys = items.key.split(".");
                       let value = keys.reduce((acc: any, key) => {
                         return acc[key] ?? 'By Admin';
-                      }, player);
+                      }, data);
 
                       return (
                         <td class="px-5 py-3">{props.setData(items.key, value)}</td>
@@ -77,14 +77,9 @@ export default function TablePagination<T, TFilters>(props: TablePaginationProps
                     }}
                   </For>
                   <td class="px-5 py-3">
-                    <div class="flex gap-2">
-                      <Button size="sm" variant="outline" class="hover:bg-gray-200">
-                        <Pencil size={16} />
-                      </Button>
-                      <Button size="sm" variant="destructive" class="hover:bg-red-100">
-                        <Trash2 size={16} />
-                      </Button>
-                    </div>
+                    <Show when={props.renderActions}>
+                      {props.renderActions?.(data, index())}
+                    </Show>
                   </td>
                 </tr>
               )}
@@ -107,6 +102,7 @@ export default function TablePagination<T, TFilters>(props: TablePaginationProps
             variant="outline"
             onClick={() => setPage((p) => Math.max(p - 1, 1))}
             disabled={page() === 1}
+            isLoading={loading()}
           >
             Prev
           </Button>
@@ -114,6 +110,7 @@ export default function TablePagination<T, TFilters>(props: TablePaginationProps
             variant="outline"
             onClick={() => setPage((p) => Math.max(p + 1, 1))}
             disabled={!hasMore()}
+            isLoading={loading()}
           >
             Next
           </Button>
@@ -122,3 +119,5 @@ export default function TablePagination<T, TFilters>(props: TablePaginationProps
     </div>
   );
 }
+
+export default TablePagination;

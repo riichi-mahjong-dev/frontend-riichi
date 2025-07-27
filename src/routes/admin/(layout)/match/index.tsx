@@ -1,3 +1,4 @@
+import { useNavigate } from "@solidjs/router";
 import { clientOnly } from "@solidjs/start";
 import { getMatches } from "~/api/match";
 import { writeDate } from "~/utils/common";
@@ -13,8 +14,24 @@ const headers: { key: string; label: string }[] = [
 ];
 
 export default function MatchHome() {
+  const navigate = useNavigate();
+
   return (
-    <div class="bg-white p-8 rounded">
+    <div class="flex flex-col bg-white p-8 rounded">
+      <div class="flex flex-row justify-between px-4">
+        <div>
+          Table
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              navigate('/admin/match/create')
+            }}
+          >
+            Create
+          </button>
+        </div>
+      </div>
       <TablePagination
         headers={headers}
         fetcher={getMatches}
