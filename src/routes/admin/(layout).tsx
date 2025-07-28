@@ -19,21 +19,27 @@ const menus = [
   },
   {
     'icon': UserRoundIcon,
+    'label': 'Admin',
+    'to' : '/admin/admin',
+    'path': ['^/admin/admin$', '^/admin/admin/create$', '^/admin/admin/\\d+/edit', '^/admin/admin/\\d+'],
+  },
+  {
+    'icon': UserRoundIcon,
     'label': 'Player',
     'to' : '/admin/player',
-    'path': ['^/admin/player$', '^/admin/player/create$', '^/admin/player/edit/\\d+', '^/admin/player/\\d+'],
+    'path': ['^/admin/player$', '^/admin/player/create$', '^/admin/player/\\d+/edit', '^/admin/player/\\d+'],
   },
   {
     'icon': Gamepad,
     'label': 'Match',
     'to' : '/admin/match',
-    'path': ['^/admin/match$', '^/admin/match/create$', '^/admin/match/edit/\\d+', '^/admin/match/\\d+'],
+    'path': ['^/admin/match$', '^/admin/match/create$', '^/admin/match/\\d+/edit', '^/admin/match/\\d+'],
   },
   {
     'icon': House,
     'label': 'Parlour',
     'to' : '/admin/parlour',
-    'path': ['^/admin/parlour$', '^/admin/parlour/create$', '^/admin/parlour/edit/\\d+', '^/admin/parlour/\\d+'],
+    'path': ['^/admin/parlour$', '^/admin/parlour/create$', '^/admin/parlour/\\d+/edit', '^/admin/parlour/\\d+'],
   },
 ];
 
@@ -52,7 +58,7 @@ export default function AdminLayout(props: RouteSectionProps) {
         }}
       >
         <div class="mt-header-mobile md:mt-header ml-0 md:ml-sidebar">
-          <div class={`px-10 py-7-5 bg-default-background  ${menuSelected() === 0 ? 'bg-white md:bg-default-background' : ''}`}>
+          <div class={`px-10 py-7-5 bg-default-background ${menuSelected() === 0 ? 'bg-white md:bg-default-background' : ''}`}>
             {props.children}
           </div>
         </div>

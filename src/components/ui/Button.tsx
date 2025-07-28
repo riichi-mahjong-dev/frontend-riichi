@@ -4,6 +4,7 @@ import { Dynamic } from "solid-js/web";
 export type ButtonProps = {
   variant?: "default" | "outline" | "destructive" | "ghost";
   size?: "sm" | "md" | "lg";
+  fullWidth?: boolean;
   leftIcon?: JSX.Element;
   rightIcon?: JSX.Element;
   as?: "button" | "a" | "div";
@@ -18,6 +19,7 @@ export default function Button(props: ButtonProps) {
       type: "button",
       as: "button",
       isLoading: false,
+      fullWidth: false,
     },
     props
   );
@@ -32,6 +34,7 @@ export default function Button(props: ButtonProps) {
     "rightIcon",
     "as",
     "isLoading",
+    "fullWidth",
   ]);
 
   const base = `
@@ -80,6 +83,7 @@ export default function Button(props: ButtonProps) {
         ${base}
         ${variants[local.variant!]}
         ${sizes[local.size!]}
+        ${local.fullWidth ? "w-full" : ""}
         ${local.class ?? ""}
       `}
       type={local.as === "button" ? local.type : undefined}

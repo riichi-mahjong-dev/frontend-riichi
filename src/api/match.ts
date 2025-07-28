@@ -34,10 +34,30 @@ export type MatchResponse = {
   has_more: boolean;
 }
 
+export type PlayerInput = {
+  player: number;
+}
+
+export type MatchCreate = {
+  parlour_id: number;
+  players: Array<PlayerInput>;
+}
+
+export type PlayerInputUpdate = {
+  match_player_id: number;
+  player: number;
+}
+
+export type MatchUpdate = {
+  parlour_id: number;
+  players: Array<PlayerInputUpdate>;
+}
+
 export const getMatches = query(async (paginateRequest: PaginateRequest): Promise<MatchResponse> => {
   "use server";
 
   const query = toQueryParams(paginateRequest);
+  console.log(query, paginateRequest);
   const res = await fetchApi<PaginateResponse<Match>>(`/api/matches?${query}`);
 
   if (!res.success) {
@@ -82,29 +102,31 @@ export const deleteMatchById = action(async (id: number): Promise<boolean> => {
   return true;
 }, "player-delete");
 
-export const createMatch = action(async (): Promise<Match> => {
+export const createMatch = action(async (body: MatchCreate): Promise<Match> => {
   "use server";
 
   const res = await fetchApi<ResponseData<Match>>(`/api/matches`, {
-    method: 'POST'
+    method: 'POST',
+    body: JSON.stringify(body),
   });
 
   if (!res.success) {
-    
+    throw new Error((res as ErrorResponse).error);
   }
 
   return (res as ResponseData<Match>).data;
 }, "player-create");
 
-export const updateMatch = action(async (id: number): Promise<Match> => {
+export const updateMatch = action(async (id: number, body: MatchUpdate): Promise<Match> => {
   "use server";
 
   const res = await fetchApi<ResponseData<Match>>(`/api/matches/${id}`, {
-    method: 'PUT'
+    method: 'PUT',
+    body: JSON.stringify(body),
   });
 
   if (!res.success) {
-    
+    throw new Error((res as ErrorResponse).error);
   }
 
   return (res as ResponseData<Match>).data;

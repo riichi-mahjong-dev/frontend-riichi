@@ -1,59 +1,101 @@
 import { action, query } from "@solidjs/router";
-import { ErrorResponse, PaginateResponse, ResponseData } from "./base";
+import { ErrorResponse, fetchApi, PaginateRequest, PaginateResponse, ResponseData, toQueryParams } from "./base";
+import { Parlour } from "./parlour";
 
 export type AdminPermission = {
   province_id: number;
   parlour_id: number;
+  parlour: Parlour;
 }
 
-export type AdminResponse = {
+export type Admin = {
   id: number;
   username: string;
   role: string;
-  admin_permission: Array<AdminPermission>;
   created_at: Date;
   updated_at: Date;
+  deleted_at: Date;
+  admin_permission: Array<AdminPermission>;
+}
+
+export type AdminResponse = {
+  message: string;
+  list: Array<Admin>;
+  has_more: boolean;
+}
+
+export type AdminPermissionInput = {
+  province_id: number;
+  parlour_id: number;
 }
 
 export type AdminRequest = {
   username: string;
   password: string;
   role: string;
-  admin_permission: Array<AdminPermission>;
+  admin_permission: Array<AdminPermissionInput>;
 }
 
-export const getAdmins = query(async (): Promise<ErrorResponse | PaginateResponse<AdminResponse>> => {
+export const getAdmins = query(async (paginateRequest: PaginateRequest): Promise<AdminResponse> => {
   "use server";
+  const query = toQueryParams(paginateRequest);
+  const res = await fetchApi<PaginateResponse<Admin>>(`/api/admins?${query}`);
 
-  const res = await fetch("");
-
-  if (!res.ok) {
-    return await res.json() as ErrorResponse;
+  if (!res.success) {
+    return {
+      message: (res as ErrorResponse).error,
+      list: [],
+      has_more: false,
+    };
   }
-  
-  return await res.json() as PaginateResponse<AdminResponse>;
+
+  const response = (res as PaginateResponse<Admin>);
+  return {
+    message: response.message,
+    list: response.data,
+    has_more: response.meta.has_more,
+  };
+
 }, "admin-list");
 
-export const getAdmin = query(async (): Promise<ErrorResponse | ResponseData<AdminResponse>> => {
+export const getAdminById = query(async (id: number): Promise<Admin|null> => {
   "use server";
 
-  const res = await fetch("");
+  const res = await fetchApi<ResponseData<Admin>>(`/api/admins/${id}`);
 
-  if (!res.ok) {
-    return await res.json() as ErrorResponse;
+  if (!res.success) {
+    return null;
   }
 
-  return await res.json() as ResponseData<AdminResponse>;
+  return (res as ResponseData<Admin>).data;
 }, "admin-detail");
 
-export const createAdmin = action(async (): Promise<ErrorResponse | ResponseData<AdminResponse>> => {
+export const createAdmin = action(async (body: AdminRequest): Promise<Admin> => {
   "use server";
 
-  const res = await fetch("");
+  const res = await fetchApi<ResponseData<Admin>>(`/api/admins`, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
 
-  if (!res.ok) {
-    return await res.json() as ErrorResponse;
+  if (!res.success) {
+    throw new Error((res as ErrorResponse).error);
   }
 
-  return await res.json() as ResponseData<AdminResponse>;
+  return (res as ResponseData<Admin>).data;
 }, "create-admin");
+
+export const updateAdmin = action(async (id: number, body: AdminRequest): Promise<Admin> => {
+  "use server";
+
+  const res = await fetchApi<ResponseData<Admin>>(`/api/admins/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(body),
+  });
+
+  if (!res.success) {
+    throw new Error((res as ErrorResponse).error);
+  }
+
+  return (res as ResponseData<Admin>).data;
+}, "admin-update");

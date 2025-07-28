@@ -17,6 +17,13 @@ export type ParlourResponse = {
   has_more: boolean;
 }
 
+export type ParlourRequest = {
+  name: string;
+  country: string;
+  province_id: number;
+  address: string;
+}
+
 export const getParlours = query(async (paginateRequest: PaginateRequest): Promise<ParlourResponse> => {
   "use server";
 
@@ -65,29 +72,31 @@ export const deleteParlourById = action(async (id: number): Promise<boolean> => 
   return true;
 }, "parlour-delete");
 
-export const createParlour = action(async (): Promise<Parlour> => {
+export const createParlour = action(async (body: ParlourRequest): Promise<Parlour> => {
   "use server";
 
   const res = await fetchApi<ResponseData<Parlour>>(`/api/parlours`, {
-    method: 'POST'
+    method: 'POST',
+    body: JSON.stringify(body),
   });
 
   if (!res.success) {
-    
+    throw new Error((res as ErrorResponse).error);
   }
 
   return (res as ResponseData<Parlour>).data;
 }, "parlour-create");
 
-export const updateParlour = action(async (id: number): Promise<Parlour> => {
+export const updateParlour = action(async (id: number, body: ParlourRequest): Promise<Parlour> => {
   "use server";
 
   const res = await fetchApi<ResponseData<Parlour>>(`/api/parlours/${id}`, {
-    method: 'PUT'
+    method: 'PUT',
+    body: JSON.stringify(body),
   });
 
   if (!res.success) {
-    
+    throw new Error((res as ErrorResponse).error);
   }
 
   return (res as ResponseData<Parlour>).data;

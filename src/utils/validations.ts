@@ -29,8 +29,10 @@ export function isPhoneNumber(val: string) {
   return null;
 }
 
-export function min(len: number) {
+export function min(len: number, empty: boolean = false) {
   return (val: string) => {
+    if (empty && val.trim().length === 0) return null;
+
     if (val.length < len) {
       return `minimal ${len} characters`;
     }

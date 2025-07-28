@@ -1,6 +1,7 @@
 import { action, query } from "@solidjs/router";
 import { ErrorResponse, fetchApi, PaginateMeta, PaginateRequest, PaginateResponse, ResponseData, toQueryParams } from "./base";
 import { Province } from "./province";
+import { MatchPlayer } from "./match";
 
 export type Player = {
   id: number;
@@ -12,12 +13,30 @@ export type Player = {
   created_at: Date;
   updated_at: Date;
   province: Province;
+  match_player: Array<MatchPlayer>;
 }
 
 export type PlayerResponse = {
   message: string;
   list: Array<Player>;
   has_more: boolean;
+}
+
+export type PlayerRequest = {
+  province_id: number;
+  rank: number;
+  country: string;
+  username: string;
+  name: string;
+  password: string;
+}
+
+export type EditPlayerRequest = {
+  province_id: number;
+  rank: number;
+  country: string;
+  username: string;
+  name: string;
 }
 
 export const getPlayers = query(async (paginateRequest: PaginateRequest): Promise<PlayerResponse> => {
@@ -67,29 +86,32 @@ export const deletePlayerById = action(async (id: number): Promise<boolean> => {
   return true;
 }, "player-delete");
 
-export const createPlayer = action(async (): Promise<Player> => {
+export const createPlayer = action(async (body: PlayerRequest): Promise<Player> => {
   "use server";
 
+  console.log(body);
   const res = await fetchApi<ResponseData<Player>>(`/api/players`, {
-    method: 'POST'
+    method: 'POST',
+    body: JSON.stringify(body),
   });
 
   if (!res.success) {
-    
+    throw new Error((res as ErrorResponse).error);
   }
 
   return (res as ResponseData<Player>).data;
 }, "player-create");
 
-export const updatePlayer = action(async (id: number): Promise<Player> => {
+export const updatePlayer = action(async (id: number, body: EditPlayerRequest): Promise<Player> => {
   "use server";
 
   const res = await fetchApi<ResponseData<Player>>(`/api/players/${id}`, {
-    method: 'PUT'
+    method: 'PUT',
+    body: JSON.stringify(body),
   });
 
   if (!res.success) {
-    
+    throw new Error((res as ErrorResponse).error);
   }
 
   return (res as ResponseData<Player>).data;

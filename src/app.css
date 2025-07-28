@@ -107,12 +107,13 @@
     --mahjong-light: #E6F1E6;
     --mahjong-white: #ffffff;
     --background-rgb: 255, 255, 255;
-    --foreground-rgb: 255, 255, 255;
+    --foreground-rgb:  255, 255, 255;
   }
 }
 
+html,
 body {
-  background: rgb(var(--background-rgb));
+  background: #F4F4F4;
 }
 
 #app {

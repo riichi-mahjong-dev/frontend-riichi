@@ -2,7 +2,7 @@ type SearchProps = {
   onInput: (value: string) => void;
 };
 
-export default function Search(props: SearchProps) {
+export default function ParlourFilter(props: SearchProps) {
   return (
       <div class="relative w-full bg-mj-green-400">
         <div class="w-full h-[250px] text-left">
@@ -25,3 +25,4 @@ export default function Search(props: SearchProps) {
       </div>
   );
 }
+

@@ -5,7 +5,7 @@ export type Params<TFilters> = {
     pageSize: number;
     search: string;
     sort: string;
-    filters: TFilters;
+    filter: TFilters;
 }
 
 type Options<TFilters, T> = {
@@ -17,7 +17,7 @@ type Options<TFilters, T> = {
   debounceMs?: number;
 };
 
-export function usePagination<T, TFilters = Record<string, any>>(options: Options<TFilters, T>) {
+export function usePagination<T, TFilters extends Record<string, any> = Record<string, any>>(options: Options<TFilters, T>) {
   const [data, setData] = createSignal<Array<T>>([]);
   const [loading, setLoading] = createSignal(false);
   const [error, setError] = createSignal<Error | null>(null);
@@ -44,24 +44,37 @@ export function usePagination<T, TFilters = Record<string, any>>(options: Option
 
   let lastParams: string | null = null;
 
+  createEffect(() => {
+    if (filters()) {
+      setData([]);
+      setPage(1);
+    }
+  });
+
   createEffect(async () => {
-    setLoading(true);
-    setError(null);
+    const currentPage = page();
+    const currentSearch = search();
+    const currentSort = sort();
+    const currentFilters = filters();
 
     const params = {
-      page: page(),
+      page: currentPage,
       pageSize,
-      search: search(),
-      sort: sort(),
-      filters: filters(),
+      search: currentSearch,
+      sort: currentSort,
+      filter: currentFilters,
     };
     const serialized = JSON.stringify(params);
     if (serialized === lastParams) return;
     lastParams = serialized;
 
+    setLoading(true);
+    setError(null);
+
     options
       .fetcher(params)
       .then((data) => {
+        console.log(data);
         setHasMore(data.has_more);
         if (options.scrollData) {
           setData((prev) => [...prev, ...data?.list]);
@@ -87,5 +100,6 @@ export function usePagination<T, TFilters = Record<string, any>>(options: Option
     setSearch,
     setHasMore,
     hasMore,
+    filterEntries: () => Object.entries(filters()).filter(([_, v]) => v !== "" && v != null),
   };
 }

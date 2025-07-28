@@ -1,11 +1,15 @@
-import { createSignal } from "solid-js";
+import { useAction, useNavigate, useSubmission } from "@solidjs/router";
+import { createEffect, createSignal, Show } from "solid-js";
+import { createMatch } from "~/api/match";
 import { getParlours, Parlour } from "~/api/parlour";
 import { getPlayers, Player } from "~/api/player";
 import SearchDropdown from "~/components/Form/SearchDropdown";
+import Button from "~/components/ui/Button";
 import { useForm } from "~/compose/useForm";
 import { isNumber } from "~/utils/validations";
 
 export default function CreateMatchPage() {
+  const navigation = useNavigate();
   const [players, setPlayers] = createSignal<Array<number>>([0,0,0,0]);
   const {
       fields,
@@ -96,14 +100,39 @@ export default function CreateMatchPage() {
       ],
   });
 
+  const submission = useSubmission(createMatch);
+  const actionCreateMatch = useAction(createMatch);
+
+  createEffect(() => {
+    if (!submission.error && submission.result) {
+      navigation("/admin/match");
+    }
+  });
+
   return (
     <div class="bg-white p-8 rounded">
       <h2 class="text-xl font-bold mb-10">
         Create Match
       </h2>
       <form
-        onSubmit={handleSubmit(({parlour_id, player_1, player_2, player_3, player_4}) => {
-          console.log(parlour_id, player_1, player_2, player_3, player_4);
+        onSubmit={handleSubmit(async ({parlour_id, player_1, player_2, player_3, player_4}) => {
+          await actionCreateMatch({
+            parlour_id: parlour_id,
+            players: [
+              {
+                player: player_1,
+              },
+              {
+                player: player_2,
+              },
+              {
+                player: player_3,
+              },
+              {
+                player: player_4,
+              }
+            ],
+          });
         })}
       >
         <SearchDropdown
@@ -122,7 +151,7 @@ export default function CreateMatchPage() {
           getLabel={(item: Parlour) => {
             return item.name;
           }}
-          onSelect={(item: Parlour) => {
+          onSelect={(item) => {
             fields['parlour_id'].setValue(item.id);
           }}
           placeholder="Search Parlour"
@@ -233,11 +262,14 @@ export default function CreateMatchPage() {
           error={fields['player_4'].error}
         />
 
-        <button
-            class="w-full dark:bg-mj-green bg-mj-green-400 text-white p-4 text-gray-700 rounded font-bold text-xl"
-            type="submit">
-            Create
-        </button>
+        <Button size="lg" variant="outline" type="submit" isLoading={submission.pending}>
+          Create
+        </Button>
+        <Show when={submission.error}>
+            <span class="text-left text-rose-700">
+                {submission.error.message}
+            </span>
+        </Show>
       </form>
     </div>
   );

@@ -4,7 +4,7 @@ import { Dynamic } from "solid-js/web";
 
 export type MenuItemProps = {
   label: string;
-  Icon: Component<{color: string}>;
+  Icon: Component;
   selected: Accessor<boolean>;
   onClick: () => void;
 }
@@ -19,15 +19,14 @@ export default function MenuItem({
     <div
       tabIndex={0}
       onClick={onClick}
-      class="flex items-center gap-6.5 h-default cursor-pointer pl-10"
+      class={`flex items-center gap-6.5 h-default cursor-pointer pl-10  ${selected() ? "text-label-selected" : "text-label-unselected hover:text-label-selected"}`}
     >
       <Dynamic
         component={Icon}
-        color={selected() ? '#232323' : '#B1B1B1'}
       />
       <Text
         as="span"
-        className={`font-medium text-lg ${selected() ? "text-label-selected" : "text-label-unselected"}`}
+        className="font-medium text-lg"
       >
         {label}
       </Text>

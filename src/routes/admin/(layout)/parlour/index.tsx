@@ -12,6 +12,7 @@ const TablePagination = clientOnly(() => import("~/components/Table/TablePaginat
 const headers: { key: string; label: string }[] = [
   { key: "id", label: "ID" },
   { key: "name", label: "Parlour Name"},
+  { key: "address", label: "Address"},
   { key: "created_at", label: "Created At" },
   { key: "updated_at", label: "Updated At" },
 ];
@@ -21,6 +22,23 @@ export default function ParlourHome() {
 
   return (
     <div class="bg-white p-8 rounded">
+      <div class="flex flex-row justify-between px-4">
+        <div>
+          Table
+        </div>
+        <div>
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={() => {
+              console.log("test");
+              navigate('/admin/parlour/create')
+            }}
+          >
+            Create
+          </Button>
+        </div>
+      </div>
       <TablePagination
         headers={headers}
         fetcher={getParlours}
@@ -55,16 +73,6 @@ export default function ParlourHome() {
                 }}
               >
                 <Pencil size={16} />
-              </Button>
-              <Button
-                size="sm"
-                variant="destructive"
-                class="hover:bg-red-100"
-                onClick={() => {
-                  navigate(`/admin/parlour/${parlour.id}`)
-                }}
-              >
-                <Trash2 size={16} />
               </Button>
             </div>
           );

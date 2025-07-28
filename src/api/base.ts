@@ -1,4 +1,5 @@
 import { getSessionUser } from "~/lib/auth/session";
+import { sleep } from "~/utils/common";
 
 export type PaginateRequest = {
   page: number;
@@ -69,7 +70,7 @@ export async function fetchApi<T>(url: string, options?: FetchOptions): Promise<
     };
 
     if (session) {
-      headers['Authorization'] = `${session.token_type} ${session.access_token}`;
+      headers['Authorization'] = `${session.token_type ?? 'Bearer'} ${session.access_token}`;
     }
 
     const response = await fetch(host + url, {

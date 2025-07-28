@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 
-type ValidationRule = (value: string) => string | null;
+type ValidationRule = (value: any) => string | null;
 
 type FieldState = {
     value: () => string;

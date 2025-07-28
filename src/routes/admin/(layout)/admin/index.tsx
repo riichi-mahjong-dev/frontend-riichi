@@ -6,6 +6,7 @@ import Pencil from "lucide-solid/icons/pencil";
 import Trash2 from "lucide-solid/icons/trash-2";
 import Eye from "lucide-solid/icons/eye";
 import { writeDate } from "~/utils/common";
+import { getAdmins } from "~/api/admin";
 
 const TablePagination = clientOnly(() => import("~/components/Table/TablePagination"));
 
@@ -16,7 +17,7 @@ const headers: { key: string; label: string }[] = [
   { key: "updated_at", label: "Updated At" },
 ];
 
-export default function MatchHome() {
+export default function AdminHome() {
   const navigate = useNavigate();
 
   return (
@@ -30,8 +31,7 @@ export default function MatchHome() {
             size="lg"
             variant="outline"
             onClick={() => {
-              console.log("test");
-              navigate('/admin/match/create')
+              navigate('/admin/admin/create')
             }}
           >
             Create
@@ -40,9 +40,9 @@ export default function MatchHome() {
       </div>
       <TablePagination
         headers={headers}
-        fetcher={getMatches}
+        fetcher={getAdmins}
         sort="-id"
-        searchAble={false}
+        searchAble={true}
         setData={(key, value) => {
           if (['created_at', 'updated_at'].includes(key)) {
             return writeDate(new Date(value));
@@ -58,7 +58,7 @@ export default function MatchHome() {
                 variant="outline"
                 class="hover:bg-gray-200"
                 onClick={() => {
-                  navigate(`/admin/match/${parlour.id}`)
+                  navigate(`/admin/admin/${parlour.id}`)
                 }}
               >
                 <Eye size={16} />
@@ -68,7 +68,7 @@ export default function MatchHome() {
                 variant="outline"
                 class="hover:bg-gray-200"
                 onClick={() => {
-                  navigate(`/admin/match/${parlour.id}/edit`)
+                  navigate(`/admin/admin/${parlour.id}/edit`)
                 }}
               >
                 <Pencil size={16} />

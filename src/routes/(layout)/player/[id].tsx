@@ -15,7 +15,7 @@ export default function PlayerDetail() {
     pageSize: 10,
     sort: '-created_at',
     filter: {
-      'id': params.id,
+      'match_players.player_id': params.id,
     }
   }), getMatches, {
     ssrLoadFrom: 'initial'

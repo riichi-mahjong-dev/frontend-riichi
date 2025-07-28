@@ -46,7 +46,7 @@ export default function ParlourPage() {
   return (
     <main class="flex flex-col w-full text-center mx-auto text-gray-700 bg-content">
       <Search onInput={(value: string) => setSearch(value)}/>
-      <div class="flex flex-col gap-10 xl:w-[930px] w-full xl:px-0 px-8 py-8 mt-20 mx-auto bg-content">
+      <div class="flex flex-col gap-4 xl:w-[930px] w-full xl:px-0 px-8 py-8 mt-20 mx-auto bg-content">
         <For each={data()}>
           {(item) => (
             <ParlourCard

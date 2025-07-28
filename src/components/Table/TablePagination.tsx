@@ -1,8 +1,9 @@
 
 import { For, JSX, Show } from "solid-js";
-import Input from "../../components/Form/InputField";
 import Button from "../../components/ui/Button";
 import { Params, usePagination } from "~/compose/createSearchResource";
+import Input from "../ui/Input";
+import Search from "lucide-solid/icons/search";
 
 export type TablePaginationProps<T, TFilters> = {
   headers: { key: string; label: string, }[];
@@ -17,6 +18,7 @@ const TablePagination = <T, TFilters>(props: TablePaginationProps<T, TFilters>) 
   const {
     data,
     setSearch,
+    search,
     page,
     setPage,
     hasMore,
@@ -33,8 +35,14 @@ const TablePagination = <T, TFilters>(props: TablePaginationProps<T, TFilters>) 
     <div class="p-4">
       <Show when={props.searchAble}>
         <Input
-          placeholder="Search..."
-          onInput={setSearch}
+          name="search"
+          value={search()}
+          label="Search"
+          onInput={(e) => {
+            setSearch(e.currentTarget.value);
+          }}
+          error={null}
+          icon={<Search/>}
         />
       </Show>
 
