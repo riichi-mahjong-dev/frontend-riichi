@@ -87,6 +87,8 @@ export default function Button(props: ButtonProps) {
         ${local.class ?? ""}
       `}
       type={local.as === "button" ? local.type : undefined}
+      disabled={local.as === "button" ? others.disabled : undefined}
+      aria-disabled={others.disabled ?? undefined}
       aria-busy={local.isLoading}
       {...others}
     >

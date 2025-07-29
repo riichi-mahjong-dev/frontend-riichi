@@ -39,6 +39,11 @@ export type EditPlayerRequest = {
   name: string;
 }
 
+export type ChangePasswordPlayer = {
+  old_password: string;
+  new_password: string;
+}
+
 export const getPlayers = query(async (paginateRequest: PaginateRequest): Promise<PlayerResponse> => {
   "use server";
   const query = toQueryParams(paginateRequest);
@@ -116,3 +121,18 @@ export const updatePlayer = action(async (id: number, body: EditPlayerRequest): 
 
   return (res as ResponseData<Player>).data;
 }, "player-update");
+
+export const updatePasswordPlayer = action(async (body: ChangePasswordPlayer): Promise<boolean> => {
+  "use server";
+
+  const res = await fetchApi<ResponseData<boolean>>(`/api/players/change-password`, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
+
+  if (!res.success) {
+    throw new Error((res as ErrorResponse).error);
+  }
+
+  return true;
+}, "player-change-password");

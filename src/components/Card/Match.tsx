@@ -1,7 +1,9 @@
-import { For } from "solid-js";
+import { For, Show } from "solid-js";
 import { MatchPlayer } from "~/api/match";
 import { Player } from "~/api/player";
 import { writeDate } from "~/utils/common";
+import { useUser } from "../context/UserContext";
+import Pencil from "lucide-solid/icons/pencil";
 
 type MatchProps = {
   id: number;
@@ -18,7 +20,8 @@ export default function MatchCard({
   parlour_name,
   created_by,
 }: MatchProps) {
-  console.log(playing_at);
+  const [user] = useUser();
+
   return (
     <a href={`/match/${id}`} class="w-full max-w-[930px] bg-white/80 dark:bg-gray-800/70 backdrop-blur-md border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg p-6 transition-all flex flex-col md:flex-row justify-between gap-6">
       {/* Left: Players */}
@@ -49,6 +52,15 @@ export default function MatchCard({
         <div class="flex items-center gap-2">
           <span class="text-gray-500 dark:text-gray-400 font-medium">👤 Creator:</span>
           <span>{created_by?.name ?? 'By Admin'}</span>
+          <Show when={created_by?.id && user.userId === created_by?.id}>
+            <a
+              href={`/match/${id}/edit`}
+              class="text-blue-600 hover:text-blue-800 ml-2"
+              onClick={(e) => e.stopPropagation()} // prevent navigating to match page
+            >
+              <Pencil size={16} />
+            </a>
+          </Show>
         </div>
       </div>
     </a>

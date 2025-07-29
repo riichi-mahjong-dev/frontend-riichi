@@ -1,13 +1,106 @@
-export default function CreateMatch() {
+import { Title } from "@solidjs/meta";
+import { createAsync, useNavigate } from "@solidjs/router";
+import { clientOnly } from "@solidjs/start";
+import { createEffect, createSignal, For, onMount, Suspense } from "solid-js";
+import { getMatches, Match } from "~/api/match";
+import { getPlayerById } from "~/api/player";
+import Button from "~/components/ui/Button";
+import { pageOnlyFor } from "~/lib/auth/session";
+const ChangePasswordModal = clientOnly(() => import("~/components/modal/change-password"));
+const MatchCardComp = clientOnly(() => import("~/components/Card/Match"));
+
+export default function Profile() {
+  const navigate = useNavigate();
+  const user = createAsync(() => pageOnlyFor(["player"], "/"));
+  const player = createAsync(() => getPlayerById(Number(user()?.user?.id)));
+  const [matches, setMatches] = createSignal<Array<Match>>([]);
+  const [modal, setModal] = createSignal<boolean>(false);
+
+  onMount(async () => {
+    const matches = await getMatches({
+      page: 1,
+      pageSize: 5,
+      sort: '-created_at',
+      filter: {
+        'match_players.player_id': player()?.id.toString() ?? '',
+      }
+    });
+
+    setMatches(matches.list);
+  });
+
   return (
-    <main class="flex flex-col w-full text-center mx-auto text-gray-700 bg-white">
-        <div class="flex w-full bg-mj-green-400">
-          <div class="h-[350px]">
+    <>
+      <Suspense fallback={<span>Loading</span>}>
+        <Title>Player: {player()?.username}</Title>
+        <div class="min-h-screen flex flex-col gap-16 w-full max-w-[930px] mx-auto pt-10">
+          <div class="backdrop-blur-xl bg-white/80 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 shadow-2xl rounded-2xl p-8 transition-all w-full">
+            <div class="text-center mb-8">
+              <h1 class="text-4xl font-extrabold text-gray-800 dark:text-white">{player()?.name}</h1>
+              <p class="text-gray-500 dark:text-gray-400 text-xl mt-1">@{player()?.username}</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 text-gray-700 dark:text-gray-300 text-base">
+              <div class="flex flex-col items-center bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
+                <span class="text-sm text-gray-500 dark:text-gray-400">Rank</span>
+                <span class="font-semibold text-lg">{player()?.rank}</span>
+              </div>
+              <div class="flex flex-col items-center bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
+                <span class="text-sm text-gray-500 dark:text-gray-400">Province</span>
+                <span class="font-semibold text-lg">{player()?.province?.name}</span>
+              </div>
+              <div class="flex flex-col items-center bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
+                <span class="text-sm text-gray-500 dark:text-gray-400">Country</span>
+                <span class="font-semibold text-lg">{player()?.country}</span>
+              </div>
+            </div>
+            <div class="mt-6 text-center">
+              <Button variant="outline" onClick={() => setModal(true)}>
+                Change Password
+              </Button>
+            </div>
+          </div>
+
+          <div class="flex flex-col w-full">
+            <Suspense fallback={<div>Loading...</div>}>
+              <div class="flex justify-between items-center">
+                <h2>
+                  <label class="text-4xl text-mj-green-400">Recent Match</label>
+                </h2>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    navigate("/match/create")
+                  }}
+                >
+                  Create Match
+                </Button>
+              </div>
+              <div class="flex w-full">
+                <div class="flex flex-col w-full lf:gap-2 gap-10 py-10">
+                  <For each={matches()}>
+                    {(item) => (
+                      <MatchCardComp
+                        id={item.id}
+                        players={item.match_players}
+                        playing_at={item.playing_at}
+                        parlour_name={item.parlour?.name ?? ""}
+                        created_by={item.creator}
+                      />
+                    )}
+                  </For>
+                </div>
+              </div>
+            </Suspense>
           </div>
         </div>
-        <div class="flex flex-col gap-4 xl:w-[930px] w-full xl:px-0 px-8 py-8 mx-auto bg-white">
-        </div>
-    </main>
+        <Suspense>
+          <ChangePasswordModal
+            open={modal()}
+            onClose={() => setModal(false)}
+          />
+        </Suspense>
+      </Suspense>
+    </>
   );
 }
-

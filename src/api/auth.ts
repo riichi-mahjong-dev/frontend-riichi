@@ -1,6 +1,9 @@
 import { action, redirect } from "@solidjs/router";
 import { ErrorResponse, fetchApi, ResponseData } from "./base";
 import { getSessionUser, setSession, User } from "~/lib/auth/session";
+import { getMatches } from "./match";
+import { getParlours } from "./parlour";
+import { getPlayers } from "./player";
 
 export type AuthResponse = {
   access_token: string;
@@ -44,7 +47,7 @@ export const loginUser = action(async (username: string, password: string, type:
   }
 
   throw redirect(redirectUrl, {
-    revalidate: [getSessionUser.key],
+    revalidate: [getMatches.key, getParlours.key, getPlayers.key]
   });
 }, "login-player");
 

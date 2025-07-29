@@ -115,6 +115,7 @@ export default function CreateMatchPage() {
         Create Match
       </h2>
       <form
+        class="flex flex-col gap-4"
         onSubmit={handleSubmit(async ({parlour_id, player_1, player_2, player_3, player_4}) => {
           await actionCreateMatch({
             parlour_id: parlour_id,

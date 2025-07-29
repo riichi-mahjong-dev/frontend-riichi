@@ -36,7 +36,7 @@ export const getPlayers = query(async (paginateRequest: PaginateRequest): Promis
     list: response.data,
     has_more: response.meta.has_more,
   };
-}, "player-list");
+}, "post-list");
 
 export const getPlayerById = query(async (id: number): Promise<Post|null> => {
   "use server";
@@ -48,7 +48,7 @@ export const getPlayerById = query(async (id: number): Promise<Post|null> => {
   }
 
   return (res as ResponseData<Post>).data;
-}, 'player-detail');
+}, 'post-detail');
 
 export const deletePlayerById = action(async (id: number): Promise<boolean> => {
   "use server";
@@ -62,7 +62,7 @@ export const deletePlayerById = action(async (id: number): Promise<boolean> => {
   }
 
   return true;
-}, "player-delete");
+}, "post-delete");
 
 export const createPlayer = action(async (): Promise<Post> => {
   "use server";
@@ -76,7 +76,7 @@ export const createPlayer = action(async (): Promise<Post> => {
   }
 
   return (res as ResponseData<Post>).data;
-}, "player-create");
+}, "post-create");
 
 export const updatePlayer = action(async (id: number): Promise<Post> => {
   "use server";
@@ -90,4 +90,4 @@ export const updatePlayer = action(async (id: number): Promise<Post> => {
   }
 
   return (res as ResponseData<Post>).data;
-}, "player-update");
+}, "post-update");

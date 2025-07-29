@@ -36,6 +36,11 @@ export type AdminRequest = {
   admin_permission: Array<AdminPermissionInput>;
 }
 
+export type ChangePasswordPlayer = {
+  old_password: string;
+  new_password: string;
+}
+
 export const getAdmins = query(async (paginateRequest: PaginateRequest): Promise<AdminResponse> => {
   "use server";
   const query = toQueryParams(paginateRequest);
@@ -99,3 +104,19 @@ export const updateAdmin = action(async (id: number, body: AdminRequest): Promis
 
   return (res as ResponseData<Admin>).data;
 }, "admin-update");
+
+export const updatePasswordAdmin = action(async (body: ChangePasswordPlayer): Promise<boolean> => {
+  "use server";
+
+  const res = await fetchApi<ResponseData<boolean>>(`/api/admins/change-password`, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
+  console.log(res);
+
+  if (!res.success) {
+    throw new Error((res as ErrorResponse).error);
+  }
+
+  return true;
+}, "admin-change-password");

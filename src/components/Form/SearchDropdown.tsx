@@ -153,7 +153,7 @@ export default function SearchDropdown<T>(props: SearchableDropdownProps<T>) {
   };
 
   return (
-    <div class="w-full relative my-2">
+    <div class="w-full relative">
       <Show when={props.label}>
         <label class="block text-sm font-medium text-gray-700 mb-1">
           {props.label}

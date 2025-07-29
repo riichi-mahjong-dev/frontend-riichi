@@ -53,6 +53,15 @@ export type MatchUpdate = {
   players: Array<PlayerInputUpdate>;
 }
 
+export type PointMatch = {
+  match_player_id: number;
+  score: number;
+}
+
+export type PointMatchUpdate = {
+  point_match_players: Array<PointMatch>;
+}
+
 export const getMatches = query(async (paginateRequest: PaginateRequest): Promise<MatchResponse> => {
   "use server";
 
@@ -100,7 +109,7 @@ export const deleteMatchById = action(async (id: number): Promise<boolean> => {
   }
 
   return true;
-}, "player-delete");
+}, "match-delete");
 
 export const createMatch = action(async (body: MatchCreate): Promise<Match> => {
   "use server";
@@ -115,7 +124,7 @@ export const createMatch = action(async (body: MatchCreate): Promise<Match> => {
   }
 
   return (res as ResponseData<Match>).data;
-}, "player-create");
+}, "match-create");
 
 export const updateMatch = action(async (id: number, body: MatchUpdate): Promise<Match> => {
   "use server";
@@ -130,21 +139,22 @@ export const updateMatch = action(async (id: number, body: MatchUpdate): Promise
   }
 
   return (res as ResponseData<Match>).data;
-}, "player-update");
+}, "match-update");
 
-export const updateMatchPoint = action(async (id: number): Promise<Match> => {
+export const updateMatchPoint = action(async (id: number, body: PointMatchUpdate): Promise<Match> => {
   "use server";
 
   const res = await fetchApi<ResponseData<Match>>(`/api/matches/${id}/point`, {
-    method: 'POST'
+    method: 'POST',
+    body: JSON.stringify(body),
   });
 
   if (!res.success) {
-    
+    throw new Error((res as ErrorResponse).error);
   }
 
   return (res as ResponseData<Match>).data;
-}, "player-update");
+}, "match-point-input");
 
 export const updateMatchApprove = action(async (id: number): Promise<Match> => {
   "use server";
@@ -154,8 +164,8 @@ export const updateMatchApprove = action(async (id: number): Promise<Match> => {
   });
 
   if (!res.success) {
-    
+    throw new Error((res as ErrorResponse).error);
   }
 
   return (res as ResponseData<Match>).data;
-}, "player-update");
+}, "match-approve");

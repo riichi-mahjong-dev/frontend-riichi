@@ -16,11 +16,11 @@ export default function ParlourCard({
   address,
 }: ParlourProps) {
   return (
-    <a href={`/parlour/${id}`} class="w-full max-w-[930px] bg-white dark:bg-gray-800 shadow-md border border-gray-200 dark:border-gray-700 rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <a href={`/parlour/${id}`} class="w-full max-w-[930px] bg-white dark:bg-gray-800 shadow-md border border-gray-200 dark:border-gray-700 rounded-2xl p-6 flex flex-col md:flex-row items-start justify-between gap-4">
       {/* Left: Name */}
       <div class="flex-1">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white">{name}</h2>
-        <div class="text-sm text-gray-500 dark:text-gray-400">{country} — {province}</div>
+        <h2 class="text-left text-xl font-medium text-gray-900 dark:text-white">{name}</h2>
+        <div class="text-left text-sm text-gray-500 dark:text-gray-400">{country} — {province}</div>
       </div>
 
       {/* Right: Address */}

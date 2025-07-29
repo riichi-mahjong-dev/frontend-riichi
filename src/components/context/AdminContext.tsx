@@ -1,8 +1,12 @@
+import { createAsync } from "@solidjs/router";
 import { createContext, JSX, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
+import { getSessionUser } from "~/lib/auth/session";
 
 type AdminStore = {
-   selectedLabel: string;
+  adminId?: number;
+  username?: string;
+  selectedLabel: string;
 }
 
 type AdminContextType = [
@@ -13,7 +17,10 @@ type AdminContextType = [
 const AdminContext = createContext<AdminContextType>();
 
 export function AdminProvider(props: {children: JSX.Element}) {
+  const adminSession = createAsync(() => getSessionUser());
   const [admin, setAdmin] = createStore<AdminStore>({
+    adminId: adminSession()?.user?.id,
+    username: adminSession()?.user?.username,
     selectedLabel: "",
   });
 

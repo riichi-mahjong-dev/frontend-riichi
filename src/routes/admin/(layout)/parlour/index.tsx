@@ -3,7 +3,6 @@ import { getParlours, Parlour } from "~/api/parlour";
 import Button from "~/components/ui/Button";
 import { writeDate } from "~/utils/common";
 import Pencil from "lucide-solid/icons/pencil";
-import Trash2 from "lucide-solid/icons/trash-2";
 import Eye from "lucide-solid/icons/eye";
 import { useNavigate } from "@solidjs/router";
 
@@ -31,7 +30,6 @@ export default function ParlourHome() {
             size="lg"
             variant="outline"
             onClick={() => {
-              console.log("test");
               navigate('/admin/parlour/create')
             }}
           >

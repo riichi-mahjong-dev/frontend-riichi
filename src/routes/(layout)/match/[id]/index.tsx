@@ -1,12 +1,15 @@
 
 import { Title } from "@solidjs/meta";
 import { createAsync, useParams } from "@solidjs/router";
-import { For } from "solid-js";
+import { For, Show } from "solid-js";
 import { getMatchById } from "~/api/match";
+import { useUser } from "~/components/context/UserContext";
+import Pencil from "lucide-solid/icons/pencil";
 
 export default function MatchDetail() {
   const params = useParams();
   const match = createAsync(() => getMatchById(Number(params.id)));
+  const [user] = useUser();
 
   return (
     <>
@@ -15,8 +18,17 @@ export default function MatchDetail() {
         <div class="w-full max-w-[930px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl p-8">
         
           {/* Header */}
-          <div class="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
+          <div class="flex flex-row items-center mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Match Details</h1>
+            <Show when={user.userId === match()?.created_by}>
+              <a
+                href={`/match/${params.id}/edit`}
+                class="text-blue-600 hover:text-blue-800 ml-2"
+                onClick={(e) => e.stopPropagation()} // prevent navigating to match page
+              >
+                <Pencil size={16} />
+              </a>
+            </Show>
           </div>
 
           {/* Players */}

@@ -3,7 +3,6 @@ import { clientOnly } from "@solidjs/start";
 import { getMatches, Match } from "~/api/match";
 import Button from "~/components/ui/Button";
 import Pencil from "lucide-solid/icons/pencil";
-import Trash2 from "lucide-solid/icons/trash-2";
 import Eye from "lucide-solid/icons/eye";
 import { writeDate } from "~/utils/common";
 
@@ -53,6 +52,26 @@ export default function MatchHome() {
           const parlour = data as Match;
           return (
             <div class="flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                class="hover:bg-gray-200"
+                onClick={() => {
+                  navigate(`/admin/match/${parlour.id}/point`)
+                }}
+              >
+                <Eye size={16} />
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                class="hover:bg-gray-200"
+                onClick={() => {
+                  navigate(`/admin/match/${parlour.id}/approve`)
+                }}
+              >
+                <Eye size={16} />
+              </Button>
               <Button
                 size="sm"
                 variant="outline"

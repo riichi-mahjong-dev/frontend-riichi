@@ -14,7 +14,7 @@ export type TablePaginationProps<T, TFilters> = {
   renderActions?: (row: T, index: number) => JSX.Element;
 }
 
-const TablePagination = <T, TFilters>(props: TablePaginationProps<T, TFilters>) => {
+const TablePagination = <T, TFilters extends Record<string, any> = Record<string, any>>(props: TablePaginationProps<T, TFilters>) => {
   const {
     data,
     setSearch,
@@ -42,7 +42,8 @@ const TablePagination = <T, TFilters>(props: TablePaginationProps<T, TFilters>) 
             setSearch(e.currentTarget.value);
           }}
           error={null}
-          icon={<Search/>}
+          icon={<Search size={18}/>}
+          placeholder="Search..."
         />
       </Show>
 

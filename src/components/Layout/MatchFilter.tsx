@@ -1,21 +1,32 @@
-type MatchFilterProps = {
-};
+import { createSignal } from "solid-js";
 
-export default function MatchFilter(props: MatchFilterProps) {
+export function MatchFilter(props: {
+  onApply: (start_date?: Date, end_date?: Date) => void;
+}) {
+  const [startDate, setStartDate] = createSignal<Date>();
+  const [endDate, setEndDate] = createSignal<Date>();
+
   return (
-      <div class="relative w-full bg-mj-green-400">
-        <div class="w-full h-[250px] text-left">
-          <div class="flex items-center xl:w-[930px] xl:px-0 mx-auto h-full px-8">
-            <h1 class="text-4xl text-white font-bold">Matches</h1>
-          </div>
-        </div>
-        <div class="absolute -bottom-14 h-28 w-full px-8">
-          <div class="flex bg-white xl:w-[930px] h-full mx-auto shadow-xl rounded-xl px-6 py-8">
-            <div class="flex-1">
-            </div>
-          </div>
-        </div>
+    <form class="space-y-4" onSubmit={(e) => e.preventDefault()}>
+      {/* Date range filter */}
+      <div>
+        <label class="block font-medium mb-1">Start Date</label>
+        <input type="date" class="w-full border p-2 rounded" onInput={(e) => setStartDate(new Date(e.currentTarget.value))}/>
       </div>
+      <div>
+        <label class="block font-medium mb-1">End Date</label>
+        <input type="date" class="w-full border p-2 rounded" onInput={(e) => setEndDate(new Date(e.currentTarget.value))}/>
+      </div>
+
+      <button
+        class="w-full mt-4 bg-green-600 text-white py-2 px-4 rounded"
+        onClick={() => {
+          props.onApply(startDate(), endDate());
+        }}
+      >
+        Apply Filters
+      </button>
+    </form>
   );
 }
 

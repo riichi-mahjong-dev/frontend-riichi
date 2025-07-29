@@ -1,4 +1,4 @@
-import { query, redirect } from "@solidjs/router";
+import { action, query, redirect } from "@solidjs/router";
 import { useSession } from "vinxi/http";
 
 export type User = {
@@ -21,20 +21,24 @@ export const loginProtected = query(async() => {
 
   const session = await getSessionUser();
 
-  if (session) {
+  if (!session) {
+    return null;
+  }
+
+  if (session.user?.user_type === "player") {
     throw redirect('/');
   }
 
-  return null;
+  throw redirect('/admin');
 }, 'login-protected');
 
-export const pageOnlyFor = query(async (role: string[], redirectTo: string = '/login') => {
+export const pageOnlyFor = query(async (role: string[], redirectTo: string = '/login'): Promise<SessionData>  => {
   "use server";
 
   const session = await getSessionUser();
 
-  if (session && role.includes(session.user?.role ?? '')) {
-    return null;
+  if (session && role.includes(session.user?.user_type ?? '')) {
+    return session;
   }
 
   throw redirect(redirectTo);
@@ -49,7 +53,7 @@ export function getSession() {
   });
 }
 
-export const getSessionUser = query(async() => {
+export const getSessionUser = query(async(): Promise<SessionData|null> => {
   "use server";
 
   const {data: sessionData} = await getSession();
@@ -87,3 +91,13 @@ export async function terminateSession() {
     return data;
   });
 }
+
+export const logout = action(async () => {
+  "use server";
+
+  await terminateSession();
+
+  throw redirect('/', {
+    revalidate: [getSessionUser.key, loginProtected.key, pageOnlyFor.key]
+  });
+});

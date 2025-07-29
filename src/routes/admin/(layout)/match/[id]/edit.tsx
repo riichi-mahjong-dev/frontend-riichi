@@ -160,7 +160,7 @@ export default function EditMatchPage() {
         Edit Match ID {params.id}
       </h2>
       <form
-        class="flex flex-col gap-2"
+        class="flex flex-col gap-4"
         onSubmit={handleSubmit(async ({parlour_id, player_1, player_2, player_3, player_4, match_player_1, match_player_2, match_player_3, match_player_4}) => {
           await actionUpdateMatch(Number(params.id), {
             parlour_id: parlour_id,
