@@ -12,6 +12,7 @@ jobs:
     env:
       VITE_SESSION_SECRET: ${{ secrets.VITE_SESSION_SECRET }}
       VITE_BACKEND_HOST: ${{ secrets.VITE_BACKEND_HOST }}
+      VITE_REDIS_HOST: test
       NODE_ENV: production
 
     steps:
