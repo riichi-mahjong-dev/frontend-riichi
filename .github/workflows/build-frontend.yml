@@ -9,6 +9,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      VITE_SESSION_SECRET: ${{ secrets.VITE_SESSION_SECRET }}
+      VITE_BACKEND_HOST: ${{ secrets.VITE_BACKEND_HOST }}
+      NODE_ENV: production
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
