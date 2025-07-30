@@ -15,7 +15,6 @@ export default function MatchLayout() {
   });
 
   onMount(() => {
-    console.log("home match");
     refetchMatch();
   });
 

@@ -74,7 +74,6 @@ export function usePagination<T, TFilters extends Record<string, any> = Record<s
     options
       .fetcher(params)
       .then((data) => {
-        console.log(data);
         setHasMore(data.has_more);
         if (options.scrollData) {
           setData((prev) => [...prev, ...data?.list]);

@@ -5,6 +5,9 @@ import { writeDate } from "~/utils/common";
 import Pencil from "lucide-solid/icons/pencil";
 import Eye from "lucide-solid/icons/eye";
 import { useNavigate } from "@solidjs/router";
+import { usePagination } from "~/compose/createSearchResource";
+import Input from "~/components/ui/Input";
+import Search from "lucide-solid/icons/search";
 
 const TablePagination = clientOnly(() => import("~/components/Table/TablePagination"));
 
@@ -18,12 +21,25 @@ const headers: { key: string; label: string }[] = [
 
 export default function ParlourHome() {
   const navigate = useNavigate();
+  const {
+    data,
+    setSearch,
+    search,
+    page,
+    setPage,
+    hasMore,
+    loading,
+  } = usePagination<Parlour, any>({
+    fetcher: getParlours,
+    pageSize: 5,
+    initialSort: "-id",
+  });
 
   return (
     <div class="bg-white p-8 rounded">
       <div class="flex flex-row justify-between px-4">
-        <div>
-          Table
+        <div class="text-xl font-bold">
+          Table Parlour
         </div>
         <div>
           <Button
@@ -37,17 +53,32 @@ export default function ParlourHome() {
           </Button>
         </div>
       </div>
+      <div class="p-4">
+        <Input
+          name="search"
+          value={search()}
+          label="Search"
+          onInput={(e) => {
+            setSearch(e.currentTarget.value);
+          }}
+          error={null}
+          icon={<Search size={18}/>}
+          placeholder="Search..."
+        />
+      </div>
       <TablePagination
         headers={headers}
-        fetcher={getParlours}
-        sort="-id"
-        searchAble={true}
         setData={(key, value) => {
           if (['created_at', 'updated_at'].includes(key)) {
             return writeDate(new Date(value));
           }
           return value;
         }}
+        data={data}
+        page={page}
+        setPage={setPage}
+        hasMore={hasMore}
+        loading={loading}
         renderActions={ (data: unknown, index: number) => {
           const parlour = data as Parlour;
           return (

@@ -112,7 +112,6 @@ export const updatePasswordAdmin = action(async (body: ChangePasswordPlayer): Pr
     method: 'POST',
     body: JSON.stringify(body),
   });
-  console.log(res);
 
   if (!res.success) {
     throw new Error((res as ErrorResponse).error);

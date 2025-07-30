@@ -1,17 +1,16 @@
-import { createSignal, For, onCleanup, onMount, Show } from "solid-js";
+import { For, onCleanup, onMount, Show } from "solid-js";
 import { usePagination } from "~/compose/createSearchResource";
 import { getMatches } from "~/api/match";
-import MatchCard from "../Card/Match";
+import MatchCard from "~/components/Card/Match";
 import Funnel from "lucide-solid/icons/funnel";
 import { writeDateOnly } from "~/utils/common";
-import { MatchFilter } from "../Layout/MatchFilter";
-import Button from "../ui/Button";
-import Dropdown from "../Layout/Dropdown";
-import SearchDropdown from "../Form/SearchDropdown";
+import { MatchFilter } from "~/components/Layout/MatchFilter";
+import Button from "~/components/ui/Button";
+import Dropdown from "~/components/Layout/Dropdown";
+import SearchDropdown from "~/components/Form/SearchDropdown";
 import { getPlayers, Player } from "~/api/player";
 
 export default function MatchPage() {
-  const [showFilters, setShowFilters] = createSignal(false);
   const {
     data,
     setPage,

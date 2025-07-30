@@ -33,9 +33,7 @@ export default function ChangePasswordModal(props: ChangePasswordModalProps) {
   const actionUpdatePasswordPlayer = useAction(props.type === 'player' ? updatePasswordPlayer : updatePasswordAdmin);
 
   createEffect(() => {
-    console.log(submission.error)
     if (!submission.error && submission.result) {
-      console.log("yes")
       props.onClose();
     }
   });

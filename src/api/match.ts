@@ -24,7 +24,7 @@ export type Match = {
   updated_at: Date;
   match_players: Array<MatchPlayer>;
   parlour?: Parlour;
-  playing_at: Date;
+  playing_at: Date | null;
   creator: Player;
 }
 
@@ -66,7 +66,6 @@ export const getMatches = query(async (paginateRequest: PaginateRequest): Promis
   "use server";
 
   const query = toQueryParams(paginateRequest);
-  console.log(query, paginateRequest);
   const res = await fetchApi<PaginateResponse<Match>>(`/api/matches?${query}`);
 
   if (!res.success) {

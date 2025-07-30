@@ -7,7 +7,7 @@ import Pencil from "lucide-solid/icons/pencil";
 
 type MatchProps = {
   id: number;
-  playing_at: Date;
+  playing_at: Date | null;
   players: MatchPlayer[];
   parlour_name: string;
   created_by?: Player;
@@ -47,7 +47,7 @@ export default function MatchCard({
         </div>
         <div class="flex items-center gap-2">
           <span class="text-gray-500 dark:text-gray-400 font-medium">📅 Date:</span>
-          <span>{writeDate(new Date(playing_at))}</span>
+          <span>{playing_at ? writeDate(new Date(playing_at)) : '-'}</span>
         </div>
         <div class="flex items-center gap-2">
           <span class="text-gray-500 dark:text-gray-400 font-medium">👤 Creator:</span>

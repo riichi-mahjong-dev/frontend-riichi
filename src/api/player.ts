@@ -94,7 +94,6 @@ export const deletePlayerById = action(async (id: number): Promise<boolean> => {
 export const createPlayer = action(async (body: PlayerRequest): Promise<Player> => {
   "use server";
 
-  console.log(body);
   const res = await fetchApi<ResponseData<Player>>(`/api/players`, {
     method: 'POST',
     body: JSON.stringify(body),
