@@ -4,6 +4,7 @@ import ParlourCard from "../Card/Parlour";
 import { getParlours } from "~/api/parlour";
 import Search from "lucide-solid/icons/search";
 import Input from "../ui/Input";
+import PinTileLoader from "../ui/Loading";
 
 export default function ParlourPage() {
   const {
@@ -60,6 +61,19 @@ export default function ParlourPage() {
             />
           </div>
         </div>
+        <Show when={data().length === 0}>
+          <div class="flex flex-col gap-3 items-center justify-center h-screen">
+            <div class="flex w-12 h-12">
+              <svg viewBox="0 0 64 64" width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+                <rect x="14" y="14" width="30" height="40" rx="4" ry="4" fill="#fff9ec" stroke="#888" stroke-width="2" transform="rotate(-5 30 34)" />
+                <circle cx="29" cy="30" r="5" fill="#ef4444" stroke="#991b1b" stroke-width="1" />
+                <rect x="26" y="18" width="30" height="40" rx="4" ry="4" fill="#fff" stroke="#444" stroke-width="2" transform="rotate(8 40 38)" />
+                <text x="41" y="42" font-size="18" text-anchor="middle" fill="#2563eb" font-family="sans-serif" font-weight="bold">東</text>
+              </svg>
+            </div>
+            <span class="font-bold text-xl">No Parlour Found</span>
+          </div>
+        </Show>
         <For each={data()}>
           {(item) => (
             <ParlourCard
@@ -72,7 +86,9 @@ export default function ParlourPage() {
           )}
         </For>
         <Show when={loading()}>
-          <span>Loading...</span>
+          <div class="flex flex-row items-center justify-center">
+            <PinTileLoader/>
+          </div>
         </Show>
       </div>
     </main>

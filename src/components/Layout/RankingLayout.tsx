@@ -35,6 +35,7 @@ export default function RankingLayout() {
                     name={player.name}
                     username={player.username}
                     rank={player.rank}
+                    match_player={player.match_player}
                   />
                 )}
               </For>

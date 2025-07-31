@@ -7,7 +7,7 @@ type PlayerProps = {
   rank: number;
   country?: string;
   province?: string;
-  match_player?: Array<MatchPlayer>;
+  match_player?: MatchPlayer;
 }
 
 export default function PlayerCard({
@@ -17,7 +17,7 @@ export default function PlayerCard({
   rank,
   match_player,
 }: PlayerProps) {
-  const mmrDelta = match_player?.[0]?.mmr_delta;
+  const mmrDelta = match_player?.mmr_delta;
   const hasValidMMR = typeof mmrDelta === "number";
 
   const isPositive = hasValidMMR && mmrDelta >= 0;
@@ -29,6 +29,8 @@ export default function PlayerCard({
 
   const mmrArrow = hasValidMMR ? (isPositive ? "↑" : "↓") : "-";
   const mmrValue = hasValidMMR ? `${Math.abs(mmrDelta!)} MMR` : "";
+
+  console.log(match_player);
 
   return (
     <a

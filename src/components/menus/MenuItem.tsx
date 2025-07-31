@@ -19,7 +19,7 @@ export default function MenuItem({
     <div
       tabIndex={0}
       onClick={onClick}
-      class={`flex items-center gap-6.5 h-default cursor-pointer pl-10  ${selected() ? "text-label-selected" : "text-label-unselected hover:text-label-selected"}`}
+      class={`flex items-center gap-6.5 h-auto cursor-pointer pl-10 py-6 ${selected() ? "text-label-selected" : "text-label-unselected hover:text-label-selected"}`}
     >
       <Dynamic
         component={Icon}

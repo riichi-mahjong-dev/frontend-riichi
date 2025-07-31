@@ -4,9 +4,9 @@ import { useAdmin } from "../context/AdminContext";
 import { clientOnly } from "@solidjs/start";
 import Dropdown from "../Layout/Dropdown";
 import User from "lucide-solid/icons/user"
-import Button from "../ui/Button";
 import { useAction, useNavigate } from "@solidjs/router";
 import { logout } from "~/lib/auth/session";
+import MenuItem from "../Layout/MenuItem";
 const ChangePasswordModal = clientOnly(() => import("~/components/modal/change-password"));
 
 type HeaderProps = {
@@ -17,7 +17,6 @@ type HeaderProps = {
 }
 
 export function Header(props: HeaderProps) {
-    const navigate = useNavigate();
     const [admin] = useAdmin();
     const [modal, setModal] = createSignal<boolean>(false);
 
@@ -31,46 +30,49 @@ export function Header(props: HeaderProps) {
             <div class="flex gap-2">
               <div
                 class="flex text-black justify-center items-center h-[36px] w-[36px] rounded-full text-xl font-bold bg-mj-green-300 text-white rounded cursor-pointer"
-                onClick={toggle}
+                onClick={() => {
+                  toggle();
+                }}
               >
               <User/>
               </div>
             </div>
           )}
         >
-          <div class="flex flex-col gap-4 p-4">
-            <Show when={admin} fallback={
-              <Button
-                fullWidth
-                variant="outline"
-                onClick={() => {
-                  navigate("/login")
+        {(toggle) => (
+          <div class="divide-y divide-gray-200">
+            <div class="p-3 text-sm text-gray-500">
+              Signed in as <strong>{admin.username}</strong>
+            </div>
+            <div class="py-1">
+              <MenuItem
+                onClick={
+                () => {toggle();
                 }}
               >
-              Login
-              </Button>
-            }>
-              <div class="font-bold">username: {admin.username}</div>
-              <Button
-                fullWidth
-                variant="outline"
-                onClick={async () => {
+              Profile
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  toggle();
                   setModal(true);
                 }}
               >
               Change Password
-              </Button>
-              <Button
-                fullWidth
-                variant="outline"
-                onClick={async () => {
-                  await logoutAction();
+              </MenuItem>
+            </div>
+            <div class="py-1">
+              <MenuItem
+                onClick={() => {
+                  toggle();
+                  logoutAction();
                 }}
               >
               Logout
-              </Button>
-            </Show>
+              </MenuItem>
+            </div>
           </div>
+        )}
         </Dropdown>
       </div>
     );

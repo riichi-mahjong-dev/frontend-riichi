@@ -1,12 +1,11 @@
 import { Title } from "@solidjs/meta";
 import { createAsync, useNavigate } from "@solidjs/router";
 import { clientOnly } from "@solidjs/start";
-import { createEffect, createSignal, For, onMount, Suspense } from "solid-js";
+import { createSignal, For, onMount, Suspense } from "solid-js";
 import { getMatches, Match } from "~/api/match";
 import { getPlayerById } from "~/api/player";
 import Button from "~/components/ui/Button";
 import { pageOnlyFor } from "~/lib/auth/session";
-const ChangePasswordModal = clientOnly(() => import("~/components/modal/change-password"));
 const MatchCardComp = clientOnly(() => import("~/components/Card/Match"));
 
 export default function Profile() {
@@ -14,7 +13,6 @@ export default function Profile() {
   const user = createAsync(() => pageOnlyFor(["player"], "/"));
   const player = createAsync(() => getPlayerById(Number(user()?.user?.id)));
   const [matches, setMatches] = createSignal<Array<Match>>([]);
-  const [modal, setModal] = createSignal<boolean>(false);
 
   onMount(async () => {
     const matches = await getMatches({
@@ -54,11 +52,6 @@ export default function Profile() {
                 <span class="font-semibold text-lg">{player()?.country}</span>
               </div>
             </div>
-            <div class="mt-6 text-center">
-              <Button variant="outline" onClick={() => setModal(true)}>
-                Change Password
-              </Button>
-            </div>
           </div>
 
           <div class="flex flex-col w-full">
@@ -94,12 +87,6 @@ export default function Profile() {
             </Suspense>
           </div>
         </div>
-        <Suspense>
-          <ChangePasswordModal
-            open={modal()}
-            onClose={() => setModal(false)}
-          />
-        </Suspense>
       </Suspense>
     </>
   );

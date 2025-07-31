@@ -13,7 +13,7 @@ export type Player = {
   created_at: Date;
   updated_at: Date;
   province: Province;
-  match_player: Array<MatchPlayer>;
+  match_player: MatchPlayer;
 }
 
 export type PlayerResponse = {

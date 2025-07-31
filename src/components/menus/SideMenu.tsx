@@ -53,7 +53,7 @@ export default function SideMenu(props: SideMenuProps) {
 
     if (activeIndex !== -1) {
       const menuElement = menuRefMap[activeIndex];
-      const size = 30;
+      const size = 5;
       if (menuElement) {
         setActiveStyle({
           top: menuElement.offsetTop - size / 2,
@@ -87,8 +87,8 @@ export default function SideMenu(props: SideMenuProps) {
               `fixed transform transition-transform duration-200 ease-in-out z-40 flex pt-3.5 w-[80vw] md:w-sidebar h-screen bg-white overflow-auto md:translate-x-0 -translate-x-full ${isOpen() ? 'translate-x-0' : '-translate-x-full'}`
           }
       >
-        <div class="relative">
-            <div class="flex flex-col gap-9-5 pt-5">
+        <div class="relative w-full">
+            <div class="flex flex-col pt-5">
               <For each={props.menus}>
                 {({ label, icon, to, path }, index) => {
                   const isSelected = () => {
@@ -124,7 +124,7 @@ export default function SideMenu(props: SideMenuProps) {
               <div class="h-[100px]"></div>
             </div>
             <div
-              class="absolute left-0 w-1 h-h-3 bg-black rounded-tr-lg rounded-br-lg transition-all duration-300"
+              class="absolute left-0 w-2 h-2 bg-black rounded-tr-lg rounded-br-lg transition-all duration-300"
               style={{
                 top: `${activeStyle().top}px`,
                 height: `${activeStyle().height}px`,
