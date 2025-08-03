@@ -1,5 +1,5 @@
 import { action, query } from "@solidjs/router";
-import { ErrorResponse, fetchApi, PaginateMeta, PaginateRequest, PaginateResponse, ResponseData, toQueryParams } from "./base";
+import { ErrorResponse, fetchApi, PaginateRequest, PaginateResponse, ResponseData, toQueryParams } from "./base";
 
 export type Post = {
   id: number;

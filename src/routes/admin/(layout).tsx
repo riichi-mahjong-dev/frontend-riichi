@@ -8,6 +8,7 @@ import Gamepad from "lucide-solid/icons/gamepad";
 import House from "lucide-solid/icons/house";
 import { AdminProvider } from "~/components/context/AdminContext";
 import { getSessionUser } from "~/lib/auth/session";
+import List from "lucide-solid/icons/list";
 import { LucideProps } from "lucide-solid";
 import { Title } from "@solidjs/meta";
 
@@ -51,13 +52,17 @@ const menus: Array<MenuType> = [
     'to' : '/admin/parlour',
     'path': ['^/admin/parlour$', '^/admin/parlour/create$', '^/admin/parlour/\\d+/edit', '^/admin/parlour/\\d+'],
   },
+  {
+    'icon': List,
+    'label': 'Logs',
+    'to': '/admin/log',
+    'path': ['^/admin/log$', '^/admin/log/\\d+'],
+  }
 ];
 
 export default function AdminLayout(props: RouteSectionProps) {
   const user = createAsync(() => getSessionUser());
   const [menuSelected, setMenuSelected] = createSignal<number>(0);
-
-  
 
   return (
     <>

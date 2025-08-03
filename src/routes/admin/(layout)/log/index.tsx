@@ -1,33 +1,39 @@
 import { useNavigate } from "@solidjs/router";
 import { clientOnly } from "@solidjs/start";
-import { getMatches, Match } from "~/api/match";
 import Button from "~/components/ui/Button";
 import Pencil from "lucide-solid/icons/pencil";
 import Eye from "lucide-solid/icons/eye";
-import ClipboardCheck from "lucide-solid/icons/clipboard-check";
-import Calculator from "lucide-solid/icons/calculator"; 
-import { usePagination } from "~/compose/createSearchResource";
-import { For, Index } from "solid-js";
 import { writeDate, writeDateOnly } from "~/utils/common";
-import SearchDropdown from "~/components/Form/SearchDropdown";
-import { getPlayers, Player } from "~/api/player";
+import { usePagination } from "~/compose/createSearchResource";
+import Input from "~/components/ui/Input";
+import Search from "lucide-solid/icons/search";
+import { getLogs, Log } from "~/api/log";
 import Dropdown from "~/components/Layout/Dropdown";
-import Funnel from "lucide-solid/icons/funnel";
 import { MatchFilter } from "~/components/Layout/MatchFilter";
+import Funnel from "lucide-solid/icons/funnel";
 
 const TablePagination = clientOnly(() => import("~/components/Table/TablePagination"));
 
-export default function MatchHome() {
+const headers: { key: string; label: string }[] = [
+  { key: "id", label: "ID" },
+  { key: "username", label: "Username" },
+  { key: "created_at", label: "Created At" },
+  { key: "updated_at", label: "Updated At" },
+];
+
+export default function AdminHome() {
   const navigate = useNavigate();
   const {
     data,
+    setSearch,
+    search,
     page,
     setPage,
     hasMore,
     loading,
     setFilters,
-  } = usePagination<Match, any>({
-    fetcher: getMatches,
+  } = usePagination<Log, any>({
+    fetcher: getLogs,
     pageSize: 5,
     initialSort: "-id",
   });
@@ -36,14 +42,14 @@ export default function MatchHome() {
     <div class="flex flex-col bg-white p-8 rounded">
       <div class="flex flex-row justify-between px-4">
         <div class="text-xl font-bold">
-          Table Match
+          Table Admin
         </div>
         <div>
           <Button
             size="lg"
             variant="outline"
             onClick={() => {
-              navigate('/admin/match/create')
+              navigate('/admin/admin/create')
             }}
           >
             Create
@@ -78,51 +84,20 @@ export default function MatchHome() {
           </div>
         )}
         </Dropdown>
-        <SearchDropdown
-          multi
-          fetchData={async (query, page) => {
-            const player = await getPlayers({
-              page:page,
-              pageSize: 10,
-              search: query,
-            });
-
-            return {
-              items: player.list,
-              hasMore: player.list.length > 0,
-            }
+        <Input
+          name="search"
+          value={search()}
+          label="Search"
+          onInput={(e) => {
+            setSearch(e.currentTarget.value);
           }}
-          getLabel={(item: Player) => {
-            return item.name;
-          }}
-          onSelect={(item) => {
-            setFilters((prev) => {
-              return {...prev, 'match_players.player_id': item.map((player) => player.id).join(",")}
-            })
-          }}
-          placeholder="Select Player Name"
+          error={null}
+          icon={<Search size={18}/>}
+          placeholder="Search..."
         />
       </div>
       <TablePagination
-        headers={[
-          { key: "id", label: "ID" },
-          { key: "username", label: "Username" },
-          { key: 'players', label: 'Players', value(row) {
-            const match = row as Match;
-            return (
-              <div class="flex flex-col">
-                <For each={match.match_players}>
-                  {(matchPlayer) => (
-                    <span>- {matchPlayer.player.name}</span>
-                  )}
-                </For>
-              </div>
-            );
-          },
-          },
-          { key: "created_at", label: "Created At" },
-          { key: "updated_at", label: "Updated At" },
-        ]}
+        headers={headers}
         data={data}
         page={page}
         setPage={setPage}
@@ -134,8 +109,8 @@ export default function MatchHome() {
           }
           return value;
         }}
-        renderActions={(data) => {
-          const parlour = data as Match;
+        renderActions={ (data: unknown, index: number) => {
+          const parlour = data as Log;
           return (
             <div class="flex gap-2">
               <Button
@@ -143,7 +118,7 @@ export default function MatchHome() {
                 variant="outline"
                 class="hover:bg-gray-200"
                 onClick={() => {
-                  navigate(`/admin/match/${parlour.id}`)
+                  navigate(`/admin/admin/${parlour.id}`)
                 }}
               >
                 <Eye size={16} />
@@ -153,30 +128,10 @@ export default function MatchHome() {
                 variant="outline"
                 class="hover:bg-gray-200"
                 onClick={() => {
-                  navigate(`/admin/match/${parlour.id}/edit`)
+                  navigate(`/admin/admin/${parlour.id}/edit`)
                 }}
               >
                 <Pencil size={16} />
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                class="hover:bg-gray-200"
-                onClick={() => {
-                  navigate(`/admin/match/${parlour.id}/point`)
-                }}
-              >
-                <Calculator size={16} />
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                class="hover:bg-gray-200"
-                onClick={() => {
-                  navigate(`/admin/match/${parlour.id}/approve`)
-                }}
-              >
-                <ClipboardCheck size={16} />
               </Button>
             </div>
           );
@@ -185,3 +140,4 @@ export default function MatchHome() {
     </div>
   )
 }
+
