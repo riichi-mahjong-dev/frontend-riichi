@@ -16,7 +16,9 @@ const TablePagination = clientOnly(() => import("~/components/Table/TablePaginat
 
 const headers: { key: string; label: string }[] = [
   { key: "id", label: "ID" },
-  { key: "username", label: "Username" },
+  { key: "job_type", label: "Job Type" },
+  { key: "status", label: "Status" },
+  { key: "reason", label: "Reason" },
   { key: "created_at", label: "Created At" },
   { key: "updated_at", label: "Updated At" },
 ];
@@ -40,22 +42,6 @@ export default function AdminHome() {
 
   return (
     <div class="flex flex-col bg-white p-8 rounded">
-      <div class="flex flex-row justify-between px-4">
-        <div class="text-xl font-bold">
-          Table Admin
-        </div>
-        <div>
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={() => {
-              navigate('/admin/admin/create')
-            }}
-          >
-            Create
-          </Button>
-        </div>
-      </div>
       <div class="flex flex-row gap-4 p-4">
         <Dropdown
           trigger={(toggle) => (
