@@ -71,9 +71,9 @@ export default function AdminHome() {
         )}
         </Dropdown>
         <Input
+          size="full"
           name="search"
           value={search()}
-          label="Search"
           onInput={(e) => {
             setSearch(e.currentTarget.value);
           }}
@@ -93,32 +93,14 @@ export default function AdminHome() {
           if (['created_at', 'updated_at'].includes(key)) {
             return writeDate(new Date(value));
           }
+          if (key === 'reason') {
+            return value ? value : '-';
+          }
           return value;
         }}
         renderActions={ (data: unknown, index: number) => {
-          const parlour = data as Log;
           return (
             <div class="flex gap-2">
-              <Button
-                size="sm"
-                variant="outline"
-                class="hover:bg-gray-200"
-                onClick={() => {
-                  navigate(`/admin/admin/${parlour.id}`)
-                }}
-              >
-                <Eye size={16} />
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                class="hover:bg-gray-200"
-                onClick={() => {
-                  navigate(`/admin/admin/${parlour.id}/edit`)
-                }}
-              >
-                <Pencil size={16} />
-              </Button>
             </div>
           );
         }}

@@ -106,7 +106,6 @@ export default function MatchHome() {
       <TablePagination
         headers={[
           { key: "id", label: "ID" },
-          { key: "username", label: "Username" },
           { key: 'players', label: 'Players', value(row) {
             const match = row as Match;
             return (
@@ -132,6 +131,7 @@ export default function MatchHome() {
           if (['created_at', 'updated_at'].includes(key)) {
             return writeDate(new Date(value));
           }
+
           return value;
         }}
         renderActions={(data) => {

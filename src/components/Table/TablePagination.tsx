@@ -51,7 +51,7 @@ const TablePagination = <T,>(props: TablePaginationProps<T>) => {
                         content = header.value(row);
                       } else {
                         const keys = header.key.split(".");
-                        let value = keys.reduce((acc: any, key) => acc?.[key] ?? "By Admin", row);
+                        let value = keys.reduce((acc: any, key) => acc?.[key] ?? "", row);
                         content = props.setData(header.key, value);
                       }
 
