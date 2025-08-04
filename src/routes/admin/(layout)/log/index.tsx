@@ -24,7 +24,6 @@ const headers: { key: string; label: string }[] = [
 ];
 
 export default function AdminHome() {
-  const navigate = useNavigate();
   const {
     data,
     setSearch,
@@ -97,12 +96,6 @@ export default function AdminHome() {
             return value ? value : '-';
           }
           return value;
-        }}
-        renderActions={ (data: unknown, index: number) => {
-          return (
-            <div class="flex gap-2">
-            </div>
-          );
         }}
       />
     </div>

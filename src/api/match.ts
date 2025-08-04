@@ -2,6 +2,7 @@ import { action, query } from "@solidjs/router";
 import { ErrorResponse, fetchApi, PaginateRequest, PaginateResponse, ResponseData, toQueryParams } from "./base";
 import { Player } from "./player";
 import { Parlour } from "./parlour";
+import { Admin } from "./admin";
 
 export type MatchPlayer = {
   id: number;
@@ -26,6 +27,7 @@ export type Match = {
   parlour?: Parlour;
   playing_at: Date | null;
   creator: Player;
+  approver: Admin;
 }
 
 export type MatchResponse = {

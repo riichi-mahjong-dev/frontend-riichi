@@ -106,6 +106,15 @@ export default function MatchHome() {
       <TablePagination
         headers={[
           { key: "id", label: "ID" },
+          { key: "username", label: "Creator" , value(row) {
+              const match = row as Match;
+              return (
+                <>
+                  {match.creator ? match.creator.name : 'By Admin'}
+                </>
+              )
+          },
+          },
           { key: 'players', label: 'Players', value(row) {
             const match = row as Match;
             return (
@@ -117,6 +126,15 @@ export default function MatchHome() {
                 </For>
               </div>
             );
+          },
+          },
+          { key: "approved", label: "Approved By", value(row) {
+              const match = row as Match;
+              return (
+                <>
+                  {match.approver ? match.approver.username : '-'}
+                </>
+              )
           },
           },
           { key: "created_at", label: "Created At" },

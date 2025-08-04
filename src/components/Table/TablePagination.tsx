@@ -32,7 +32,9 @@ const TablePagination = <T,>(props: TablePaginationProps<T>) => {
                   </th>
                 )}
               </For>
-              <th class="px-5 py-3 text-left">Actions</th>
+              <Show when={props.renderActions}>
+                <th class="px-5 py-3 text-left">Actions</th>
+              </Show>
             </tr>
           </thead>
           <tbody>
@@ -58,11 +60,11 @@ const TablePagination = <T,>(props: TablePaginationProps<T>) => {
                       return <td class="px-5 py-3">{content}</td>;
                     }}
                   </For>
-                  <td class="px-5 py-3">
-                    <Show when={props.renderActions}>
-                      {props.renderActions?.(row, index())}
-                    </Show>
-                  </td>
+                  <Show when={props.renderActions}>
+                    <td class="px-5 py-3">
+                        {props.renderActions?.(row, index())}
+                    </td>
+                  </Show>
                 </tr>
               )}
             </For>
