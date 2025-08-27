@@ -1,5 +1,5 @@
 import { useAction, useNavigate, useParams, useSubmission } from "@solidjs/router";
-import { createEffect, createSignal, onMount, Show } from "solid-js";
+import { createEffect, createSignal, Index, onMount, Show } from "solid-js";
 import { getMatchById, MatchPlayer, updateMatchPoint } from "~/api/match";
 import { getPlayers, Player } from "~/api/player";
 import SearchDropdown from "~/components/Form/SearchDropdown";
@@ -140,6 +140,7 @@ export default function PointMatchPage() {
           label="Point Player 1:"
           value={fields['score_player_1'].value()}
           onInput={(e) => fields['score_player_1'].setValue(Number(e.currentTarget.value))}
+          type="number"
           placeholder="Point..."
           error={fields['score_player_1'].error()}
         />
@@ -168,6 +169,7 @@ export default function PointMatchPage() {
           label="Point Player 2:"
           value={fields['score_player_2'].value()}
           onInput={(e) => fields['score_player_2'].setValue(Number(e.currentTarget.value))}
+          type="number"
           placeholder="Point..."
           error={fields['score_player_1'].error()}
         />
@@ -195,6 +197,7 @@ export default function PointMatchPage() {
           label="Point Player 3:"
           value={fields['score_player_3'].value()}
           onInput={(e) => fields['score_player_3'].setValue(Number(e.currentTarget.value))}
+          type="number"
           placeholder="Point..."
           error={fields['score_player_1'].error()}
         />
@@ -222,6 +225,7 @@ export default function PointMatchPage() {
           label="Point Player 4:"
           value={fields['score_player_4'].value()}
           onInput={(e) => fields['score_player_4'].setValue(Number(e.currentTarget.value))}
+          type="number"
           placeholder="Point..."
           error={fields['score_player_1'].error()}
         />

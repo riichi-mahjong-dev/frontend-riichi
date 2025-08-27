@@ -29,7 +29,7 @@ export default function PlayerDetail() {
     <>
       <Suspense fallback={<span>Loading</span>}>
         <Title>Player: {player()?.username}</Title>
-        <div class="min-h-screen flex flex-col gap-16 w-full max-w-[930px] mx-auto pt-10">
+        <div class="min-h-screen flex flex-col gap-16 w-full px-4 max-w-[930px] mx-auto pt-10">
           <div class="backdrop-blur-xl bg-white/80 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 shadow-2xl rounded-2xl p-8 transition-all w-full">
             <div class="text-center mb-8">
               <h1 class="text-4xl font-extrabold text-gray-800 dark:text-white">{player()?.name}</h1>

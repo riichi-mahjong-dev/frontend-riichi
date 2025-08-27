@@ -30,8 +30,6 @@ export default function PlayerCard({
   const mmrArrow = hasValidMMR ? (isPositive ? "↑" : "↓") : "-";
   const mmrValue = hasValidMMR ? `${Math.abs(mmrDelta!)} MMR` : "";
 
-  console.log(match_player);
-
   return (
     <a
       href={`/player/${id}`}

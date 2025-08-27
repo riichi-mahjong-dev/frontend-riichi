@@ -1,12 +1,18 @@
 import { redirect } from "@solidjs/router";
 import { createMiddleware } from "@solidjs/start/middleware";
-import { getSessionUser } from "~/lib/auth/session";
+import { useSession } from "vinxi/http";
+import { SessionData } from "~/lib/auth/session";
 
 export default createMiddleware({
   onRequest: async (event) => {
     const url = new URL(event.request.url);
     try {
-      const session = await getSessionUser();
+      const secret_password = import.meta.env.VITE_SESSION_SECRET as string;
+      const {data: sessionData} = await useSession<SessionData>({
+        password: secret_password,
+      });
+
+      const session = Boolean(sessionData.access_token) ? sessionData : null;
 
       if (!session && url.pathname === '/admin') {
          return redirect("/admin/login");
@@ -23,9 +29,7 @@ export default createMiddleware({
       }
       
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   },
-  onBeforeResponse: async (event) => {
-  }
 });

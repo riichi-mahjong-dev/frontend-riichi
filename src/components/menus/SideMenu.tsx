@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "@solidjs/router";
-import { JSX, createEffect, createSignal, For, children, Component, onMount, onCleanup } from "solid-js"
+import { JSX, createEffect, createSignal, For, children, Component, onMount, onCleanup, Index } from "solid-js"
 import MenuItem from "./MenuItem";
 import { Header } from "../container/Header";
 import { useAdmin } from "../context/AdminContext";
@@ -51,9 +51,9 @@ export default function SideMenu(props: SideMenuProps) {
       });
     }) ?? -1;
 
-    if (activeIndex !== -1) {
+    if (activeIndex >= 0) {
       const menuElement = menuRefMap[activeIndex];
-      const size = 5;
+      const size = props.menus?.length ?? 0;
       if (menuElement) {
         setActiveStyle({
           top: menuElement.offsetTop - size / 2,
@@ -89,8 +89,9 @@ export default function SideMenu(props: SideMenuProps) {
       >
         <div class="relative w-full">
             <div class="flex flex-col pt-5">
-              <For each={props.menus}>
-                {({ label, icon, to, path }, index) => {
+              <Index each={props.menus}>
+                {(menu, index) => {
+                  const { label, icon, to, path } = menu();
                   const isSelected = () => {
                     const pathLocation = location.pathname;
                     return path.some((pattern) => {
@@ -103,14 +104,14 @@ export default function SideMenu(props: SideMenuProps) {
                     });
                   };
                   return (
-                    <div ref={(el) => (menuRefMap[index()] = el)}>
+                    <div ref={(el) => (menuRefMap[index] = el)}>
                       <MenuItem
                         label={label}
                         Icon={icon}
                         selected={isSelected}
                         onClick={async () => {
                           navigation(to);
-                          props.OnMenuSelected(index());
+                          props.OnMenuSelected(index);
                           setIsOpen(false);
                           setAdmin({
                             selectedLabel: label,
@@ -120,7 +121,7 @@ export default function SideMenu(props: SideMenuProps) {
                     </div>
                   );
                 }}
-              </For>
+              </Index>
               <div class="h-[100px]"></div>
             </div>
             <div

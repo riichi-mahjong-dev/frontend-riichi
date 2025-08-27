@@ -1,4 +1,4 @@
-import { For, Show } from "solid-js";
+import { For, Index, Show } from "solid-js";
 import { MatchPlayer } from "~/api/match";
 import { Player } from "~/api/player";
 import { writeDate } from "~/utils/common";
@@ -27,15 +27,15 @@ export default function MatchCard({
       {/* Left: Players */}
       <div class="flex-1">
         <h2 class="text-gray-900 dark:text-white font-semibold text-lg mb-3">Players</h2>
-        <div class="grid grid-cols-2 gap-4">
-          <For each={players}>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Index each={players}>
             {(player) => (
               <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-3 text-sm text-gray-800 dark:text-gray-100 shadow-sm">
-                <div class="font-medium">{player.player.name}</div>
-                <div class="text-gray-500 dark:text-gray-400 text-xs">@{player.player.username}</div>
+                <div class="font-medium">{player().player.name}</div>
+                <div class="text-gray-500 dark:text-gray-400 text-xs">@{player().player.username}</div>
               </div>
             )}
-          </For>
+          </Index>
         </div>
       </div>
 

@@ -118,12 +118,16 @@ export default function MatchHome() {
           { key: 'players', label: 'Players', value(row) {
             const match = row as Match;
             return (
-              <div class="flex flex-col">
-                <For each={match.match_players}>
+              <div class="flex flex-row flex-wrap gap-1">
+                <Index each={match.match_players}>
                   {(matchPlayer) => (
-                    <span>- {matchPlayer.player.name}</span>
+                    <span
+                      class="bg-blue-100 rounded-md font-medium text-blue-600 hover:text-blue-800 focus:outline-none px-3 py-1"
+                    >
+                    {matchPlayer().player.name}
+                    </span>
                   )}
-                </For>
+                </Index>
               </div>
             );
           },

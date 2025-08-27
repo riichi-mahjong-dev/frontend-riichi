@@ -1,7 +1,7 @@
 
 import { Title } from "@solidjs/meta";
 import { createAsync, useParams } from "@solidjs/router";
-import { For, Show } from "solid-js";
+import { For, Index, Show } from "solid-js";
 import { getMatchById } from "~/api/match";
 import { useUser } from "~/components/context/UserContext";
 import Pencil from "lucide-solid/icons/pencil";
@@ -34,15 +34,15 @@ export default function MatchDetail() {
           {/* Players */}
           <div class="mb-6">
             <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">Players</h2>
-            <div class="grid grid-cols-2 gap-4">
-              <For each={match()?.match_players}>
+            <div class="grid grid-col-1 sm:grid-cols-2 gap-4">
+              <Index each={match()?.match_players}>
                 {(match_player) => (
-                  <a href={`/player/${match_player.player.id}`} class="bg-gray-100 dark:bg-gray-700 rounded-lg p-3 text-sm shadow-sm text-gray-800 dark:text-gray-100">
-                    <div class="font-medium">{match_player.player.name}</div>
-                    <div class="text-gray-500 dark:text-gray-400 text-xs">@{match_player.player.username}</div>
+                  <a href={`/player/${match_player().player.id}`} class="bg-gray-100 dark:bg-gray-700 rounded-lg p-3 text-sm shadow-sm text-gray-800 dark:text-gray-100">
+                    <div class="font-medium">{match_player().player.name}</div>
+                    <div class="text-gray-500 dark:text-gray-400 text-xs">@{match_player().player.username}</div>
                   </a>
                 )}
-              </For>
+              </Index>
             </div>
           </div>
 
