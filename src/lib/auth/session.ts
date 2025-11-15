@@ -5,18 +5,18 @@ export type User = {
   id: number;
   username: string;
   user_type: string;
-  role: 'super-admin' | 'admin' | 'player';
-}
+  role: "super-admin" | "admin" | "player";
+};
 
 export interface SessionData {
   access_token?: string;
   refresh_token?: string;
   expired?: number;
   token_type?: string;
-  user?: User,
+  user?: User;
 }
 
-export const loginProtected = query(async() => {
+export const loginProtected = query(async () => {
   "use server";
 
   const session = await getSessionUser();
@@ -26,23 +26,29 @@ export const loginProtected = query(async() => {
   }
 
   if (session.user?.user_type === "player") {
-    throw redirect('/');
+    throw redirect("/");
   }
 
-  throw redirect('/admin');
-}, 'login-protected');
+  throw redirect("/admin");
+}, "login-protected");
 
-export const pageOnlyFor = query(async (role: string[], redirectTo: string = '/login'): Promise<SessionData>  => {
-  "use server";
+export const pageOnlyFor = query(
+  async (
+    role: string[],
+    redirectTo: string = "/login",
+  ): Promise<SessionData> => {
+    "use server";
 
-  const session = await getSessionUser();
+    const session = await getSessionUser();
 
-  if (session && role.includes(session.user?.user_type ?? '')) {
-    return session;
-  }
+    if (session && role.includes(session.user?.user_type ?? "")) {
+      return session;
+    }
 
-  throw redirect(redirectTo);
-}, 'page-protected');
+    throw redirect(redirectTo);
+  },
+  "page-protected",
+);
 
 export function getSession() {
   "use server";
@@ -53,10 +59,10 @@ export function getSession() {
   });
 }
 
-export const getSessionUser = query(async(): Promise<SessionData|null> => {
+export const getSessionUser = query(async (): Promise<SessionData | null> => {
   "use server";
 
-  const {data: sessionData} = await getSession();
+  const { data: sessionData } = await getSession();
 
   return Boolean(sessionData.access_token) ? sessionData : null;
 }, "session-user");
@@ -97,7 +103,7 @@ export const logout = action(async () => {
 
   await terminateSession();
 
-  throw redirect('/', {
-    revalidate: [getSessionUser.key, loginProtected.key, pageOnlyFor.key]
+  throw redirect("/", {
+    revalidate: [getSessionUser.key, loginProtected.key, pageOnlyFor.key],
   });
 });

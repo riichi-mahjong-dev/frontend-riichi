@@ -18,10 +18,10 @@ export default function Profile() {
     const matches = await getMatches({
       page: 1,
       pageSize: 5,
-      sort: '-created_at',
+      sort: "-created_at",
       filter: {
-        'match_players.player_id': player()?.id.toString() ?? '',
-      }
+        "match_players.player_id": player()?.id.toString() ?? "",
+      },
     });
 
     setMatches(matches.list);
@@ -34,21 +34,33 @@ export default function Profile() {
         <div class="min-h-screen flex flex-col gap-16 w-full max-w-[930px] mx-auto pt-10">
           <div class="backdrop-blur-xl bg-white/80 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 shadow-2xl rounded-2xl p-8 transition-all w-full">
             <div class="text-center mb-8">
-              <h1 class="text-4xl font-extrabold text-gray-800 dark:text-white">{player()?.name}</h1>
-              <p class="text-gray-500 dark:text-gray-400 text-xl mt-1">@{player()?.username}</p>
+              <h1 class="text-4xl font-extrabold text-gray-800 dark:text-white">
+                {player()?.name}
+              </h1>
+              <p class="text-gray-500 dark:text-gray-400 text-xl mt-1">
+                @{player()?.username}
+              </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-6 text-gray-700 dark:text-gray-300 text-base">
               <div class="flex flex-col items-center bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                <span class="text-sm text-gray-500 dark:text-gray-400">Rank</span>
+                <span class="text-sm text-gray-500 dark:text-gray-400">
+                  Rank
+                </span>
                 <span class="font-semibold text-lg">{player()?.rank}</span>
               </div>
               <div class="flex flex-col items-center bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                <span class="text-sm text-gray-500 dark:text-gray-400">Province</span>
-                <span class="font-semibold text-lg">{player()?.province?.name}</span>
+                <span class="text-sm text-gray-500 dark:text-gray-400">
+                  Province
+                </span>
+                <span class="font-semibold text-lg">
+                  {player()?.province?.name}
+                </span>
               </div>
               <div class="flex flex-col items-center bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                <span class="text-sm text-gray-500 dark:text-gray-400">Country</span>
+                <span class="text-sm text-gray-500 dark:text-gray-400">
+                  Country
+                </span>
                 <span class="font-semibold text-lg">{player()?.country}</span>
               </div>
             </div>
@@ -63,7 +75,7 @@ export default function Profile() {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    navigate("/match/create")
+                    navigate("/match/create");
                   }}
                 >
                   Create Match

@@ -21,7 +21,7 @@ export default function Button(props: ButtonProps) {
       isLoading: false,
       fullWidth: false,
     },
-    props
+    props,
   );
 
   const [local, others] = splitProps(merged, [
@@ -42,7 +42,7 @@ export default function Button(props: ButtonProps) {
     rounded-xl font-semibold shadow-sm
     transition-all duration-200 ease-in-out
     disabled:opacity-50 disabled:pointer-events-none
-    transform hover:-translate-y-0.5 active:scale-95
+    transform hover: active:scale-95
     focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
   `;
 
@@ -83,7 +83,7 @@ export default function Button(props: ButtonProps) {
         ${base}
         ${variants[local.variant!]}
         ${sizes[local.size!]}
-        ${local.fullWidth ? "w-full" : ""}
+        ${local.fullWidth ? "w-full h-full" : ""}
         ${local.class ?? ""}
       `}
       type={local.as === "button" ? local.type : undefined}
@@ -96,7 +96,10 @@ export default function Button(props: ButtonProps) {
         <span class="inline-flex items-center">{local.leftIcon}</span>
       </Show>
 
-      <Show when={!local.isLoading} fallback={<span class="animate-pulse">...</span>}>
+      <Show
+        when={!local.isLoading}
+        fallback={<span class="animate-pulse">...</span>}
+      >
         {local.children}
       </Show>
 

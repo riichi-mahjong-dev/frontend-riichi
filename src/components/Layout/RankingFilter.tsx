@@ -11,11 +11,19 @@ export function RankingFilter(props: {
       {/* Rank range filter */}
       <div>
         <label class="block font-medium mb-1">Min MMR</label>
-        <input type="number" class="w-full border p-2 rounded" onInput={(e) => setMin(Number(e.currentTarget.value))}/>
+        <input
+          type="number"
+          class="w-full border p-2 rounded"
+          onInput={(e) => setMin(Number(e.currentTarget.value))}
+        />
       </div>
       <div>
         <label class="block font-medium mb-1">Max MMR </label>
-        <input type="number" class="w-full border p-2 rounded" onInput={(e) => setMax(Number(e.currentTarget.value))}/>
+        <input
+          type="number"
+          class="w-full border p-2 rounded"
+          onInput={(e) => setMax(Number(e.currentTarget.value))}
+        />
       </div>
 
       <button
@@ -29,4 +37,3 @@ export function RankingFilter(props: {
     </form>
   );
 }
-

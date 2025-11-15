@@ -1,6 +1,6 @@
 import { useNavigate } from "@solidjs/router";
 import { clientOnly } from "@solidjs/start";
-import { getMatches, Match } from "~/api/match";
+import { Match } from "~/api/match";
 import Button from "~/components/ui/Button";
 import Pencil from "lucide-solid/icons/pencil";
 import Eye from "lucide-solid/icons/eye";
@@ -10,7 +10,9 @@ import { usePagination } from "~/compose/createSearchResource";
 import Input from "~/components/ui/Input";
 import Search from "lucide-solid/icons/search";
 
-const TablePagination = clientOnly(() => import("~/components/Table/TablePagination"));
+const TablePagination = clientOnly(
+  () => import("~/components/Table/TablePagination"),
+);
 
 const headers: { key: string; label: string }[] = [
   { key: "id", label: "ID" },
@@ -21,32 +23,23 @@ const headers: { key: string; label: string }[] = [
 
 export default function AdminHome() {
   const navigate = useNavigate();
-  const {
-    data,
-    setSearch,
-    search,
-    page,
-    setPage,
-    hasMore,
-    loading,
-  } = usePagination<Admin, any>({
-    fetcher: getAdmins,
-    pageSize: 5,
-    initialSort: "-id",
-  });
+  const { data, setSearch, search, page, setPage, hasMore, loading } =
+    usePagination<Admin, any>({
+      fetcher: getAdmins,
+      pageSize: 5,
+      initialSort: "-id",
+    });
 
   return (
     <div class="flex flex-col bg-white p-8 rounded">
       <div class="flex flex-row justify-between px-4">
-        <div class="text-xl font-bold">
-          Table Admin
-        </div>
+        <div class="text-xl font-bold">Table Admin</div>
         <div>
           <Button
             size="lg"
             variant="outline"
             onClick={() => {
-              navigate('/admin/admin/create')
+              navigate("/admin/admin/create");
             }}
           >
             Create
@@ -62,7 +55,7 @@ export default function AdminHome() {
             setSearch(e.currentTarget.value);
           }}
           error={null}
-          icon={<Search size={18}/>}
+          icon={<Search size={18} />}
           placeholder="Search..."
         />
       </div>
@@ -74,12 +67,12 @@ export default function AdminHome() {
         hasMore={hasMore}
         loading={loading}
         setData={(key, value) => {
-          if (['created_at', 'updated_at'].includes(key)) {
+          if (["created_at", "updated_at"].includes(key)) {
             return writeDate(new Date(value));
           }
           return value;
         }}
-        renderActions={ (data: unknown, index: number) => {
+        renderActions={(data: unknown, _: number) => {
           const parlour = data as Match;
           return (
             <div class="flex gap-2">
@@ -88,7 +81,7 @@ export default function AdminHome() {
                 variant="outline"
                 class="hover:bg-gray-200"
                 onClick={() => {
-                  navigate(`/admin/admin/${parlour.id}`)
+                  navigate(`/admin/admin/${parlour.id}`);
                 }}
               >
                 <Eye size={16} />
@@ -98,7 +91,7 @@ export default function AdminHome() {
                 variant="outline"
                 class="hover:bg-gray-200"
                 onClick={() => {
-                  navigate(`/admin/admin/${parlour.id}/edit`)
+                  navigate(`/admin/admin/${parlour.id}/edit`);
                 }}
               >
                 <Pencil size={16} />
@@ -108,5 +101,5 @@ export default function AdminHome() {
         }}
       />
     </div>
-  )
+  );
 }

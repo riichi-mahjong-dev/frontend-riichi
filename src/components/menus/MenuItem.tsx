@@ -7,7 +7,7 @@ export type MenuItemProps = {
   Icon: Component;
   selected: Accessor<boolean>;
   onClick: () => void;
-}
+};
 
 export default function MenuItem({
   label,
@@ -19,17 +19,12 @@ export default function MenuItem({
     <div
       tabIndex={0}
       onClick={onClick}
-      class={`flex items-center gap-6.5 h-auto cursor-pointer pl-10 py-6 ${selected() ? "text-label-selected" : "text-label-unselected hover:text-label-selected"}`}
+      class={`flex items-center gap-6-5 h-auto cursor-pointer pl-10 py-6 ${selected() ? "text-label-selected" : "text-label-unselected hover:text-label-selected"}`}
     >
-      <Dynamic
-        component={Icon}
-      />
-      <Text
-        as="span"
-        className="font-medium text-lg"
-      >
+      <Dynamic component={Icon} />
+      <Text as="span" className="font-medium text-lg">
         {label}
       </Text>
     </div>
-  )
+  );
 }

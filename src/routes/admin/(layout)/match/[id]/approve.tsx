@@ -1,4 +1,9 @@
-import { useAction, useNavigate, useParams, useSubmission } from "@solidjs/router";
+import {
+  useAction,
+  useNavigate,
+  useParams,
+  useSubmission,
+} from "@solidjs/router";
 import { createEffect, createSignal, onMount, Show } from "solid-js";
 import { getMatchById, updateMatchApprove } from "~/api/match";
 import { getParlours, Parlour } from "~/api/parlour";
@@ -14,11 +19,7 @@ export default function ApproveMatchPage() {
   const [players, setPlayers] = createSignal<Array<Player>>([]);
   const [parlour, setParlour] = createSignal<Parlour>();
   const [approved, setApproved] = createSignal<boolean>(false);
-  const {
-      handleSubmit,
-  } = useForm({
-  }, {
-  });
+  const { handleSubmit } = useForm({}, {});
 
   const submission = useSubmission(updateMatchApprove);
   const actionUpdateMatchApprove = useAction(updateMatchApprove);
@@ -49,9 +50,7 @@ export default function ApproveMatchPage() {
 
   return (
     <div class="bg-white p-8 rounded">
-      <h2 class="text-xl font-bold mb-10">
-        Approve Match ID {params.id}
-      </h2>
+      <h2 class="text-xl font-bold mb-10">Approve Match ID {params.id}</h2>
       <form
         class="flex flex-col gap-4"
         onSubmit={handleSubmit(async () => {
@@ -63,7 +62,7 @@ export default function ApproveMatchPage() {
           label="Creator:"
           fetchData={async (query, page) => {
             const player = await getPlayers({
-              page:page,
+              page: page,
               pageSize: 10,
               search: query,
             });
@@ -71,7 +70,7 @@ export default function ApproveMatchPage() {
             return {
               items: player.list,
               hasMore: player.list.length > 0,
-            }
+            };
           }}
           getLabel={(item: Player) => {
             return item.name;
@@ -83,7 +82,7 @@ export default function ApproveMatchPage() {
           label="Parlour:"
           fetchData={async (query, page) => {
             const parlours = await getParlours({
-              page:page,
+              page: page,
               pageSize: 10,
               search: query,
             });
@@ -91,7 +90,7 @@ export default function ApproveMatchPage() {
             return {
               items: parlours.list,
               hasMore: parlours.list.length > 0,
-            }
+            };
           }}
           getLabel={(item: Parlour) => {
             return item.name;
@@ -103,7 +102,7 @@ export default function ApproveMatchPage() {
           label="Player 1:"
           fetchData={async (query, page) => {
             const player = await getPlayers({
-              page:page,
+              page: page,
               pageSize: 10,
               search: query,
             });
@@ -111,7 +110,7 @@ export default function ApproveMatchPage() {
             return {
               items: player.list,
               hasMore: player.list.length > 0,
-            }
+            };
           }}
           getLabel={(item: Player) => {
             return item.name;
@@ -123,7 +122,7 @@ export default function ApproveMatchPage() {
           label="Player 2:"
           fetchData={async (query, page) => {
             const player = await getPlayers({
-              page:page,
+              page: page,
               pageSize: 10,
               search: query,
             });
@@ -131,7 +130,7 @@ export default function ApproveMatchPage() {
             return {
               items: player.list,
               hasMore: player.list.length > 0,
-            }
+            };
           }}
           getLabel={(item: Player) => {
             return item.name;
@@ -143,7 +142,7 @@ export default function ApproveMatchPage() {
           label="Player 3:"
           fetchData={async (query, page) => {
             const player = await getPlayers({
-              page:page,
+              page: page,
               pageSize: 10,
               search: query,
             });
@@ -151,7 +150,7 @@ export default function ApproveMatchPage() {
             return {
               items: player.list,
               hasMore: player.list.length > 0,
-            }
+            };
           }}
           getLabel={(item: Player) => {
             return item.name;
@@ -163,7 +162,7 @@ export default function ApproveMatchPage() {
           label="Player 4:"
           fetchData={async (query, page) => {
             const player = await getPlayers({
-              page:page,
+              page: page,
               pageSize: 10,
               search: query,
             });
@@ -171,7 +170,7 @@ export default function ApproveMatchPage() {
             return {
               items: player.list,
               hasMore: player.list.length > 0,
-            }
+            };
           }}
           getLabel={(item: Player) => {
             return item.name;
@@ -179,13 +178,19 @@ export default function ApproveMatchPage() {
           defaultSelected={players()[3]}
         />
 
-        <Button disabled={approved()} size="lg" variant="outline" type="submit" isLoading={submission.pending}>
-          {approved() ? 'Already Approved' : 'Approve This Match'}
+        <Button
+          disabled={approved()}
+          size="lg"
+          variant="outline"
+          type="submit"
+          isLoading={submission.pending}
+        >
+          {approved() ? "Already Approved" : "Approve This Match"}
         </Button>
         <Show when={submission.error}>
-            <span class="text-left text-rose-700">
-                {submission.error.message}
-            </span>
+          <span class="text-left text-rose-700">
+            {submission.error.message}
+          </span>
         </Show>
       </form>
     </div>

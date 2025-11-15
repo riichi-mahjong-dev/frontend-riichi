@@ -11,11 +11,19 @@ export function MatchFilter(props: {
       {/* Date range filter */}
       <div>
         <label class="block font-medium mb-1">Start Date</label>
-        <input type="date" class="w-full border p-2 rounded" onInput={(e) => setStartDate(new Date(e.currentTarget.value))}/>
+        <input
+          type="date"
+          class="w-full border p-2 rounded"
+          onInput={(e) => setStartDate(new Date(e.currentTarget.value))}
+        />
       </div>
       <div>
         <label class="block font-medium mb-1">End Date</label>
-        <input type="date" class="w-full border p-2 rounded" onInput={(e) => setEndDate(new Date(e.currentTarget.value))}/>
+        <input
+          type="date"
+          class="w-full border p-2 rounded"
+          onInput={(e) => setEndDate(new Date(e.currentTarget.value))}
+        />
       </div>
 
       <button
@@ -29,4 +37,3 @@ export function MatchFilter(props: {
     </form>
   );
 }
-

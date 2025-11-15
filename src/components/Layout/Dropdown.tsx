@@ -1,11 +1,4 @@
-import {
-  createSignal,
-  onCleanup,
-  onMount,
-  JSX,
-  Show,
-  createEffect,
-} from "solid-js";
+import { createSignal, onCleanup, onMount, JSX, Show } from "solid-js";
 
 type DropdownProps = {
   trigger: (toggle: () => void) => JSX.Element;
@@ -38,8 +31,8 @@ export default function Dropdown(props: DropdownProps) {
 
       <Show when={open()}>
         <div
-          class={`absolute mt-2 z-50 bg-white rounded-lg drop-shadow-2xl ring-1 ring-black/10 
-            ${props.align === "right" ? "right-0" : "left-0"} 
+          class={`absolute mt-2 z-50 bg-white rounded-lg drop-shadow-2xl ring-1 ring-black/10
+            ${props.align === "right" ? "right-0" : "left-0"}
             ${props.width ?? "w-64"}`}
           onClick={(e) => e.stopPropagation()}
         >

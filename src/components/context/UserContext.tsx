@@ -7,7 +7,7 @@ type UserStore = {
   userId?: number;
   username?: string;
   name?: string;
-}
+};
 
 type UserContextType = [
   state: UserStore,
@@ -16,7 +16,7 @@ type UserContextType = [
 
 const UserContext = createContext<UserContextType>();
 
-export function UserProvider(props: {children: JSX.Element}) {
+export function UserProvider(props: { children: JSX.Element }) {
   const userSession = createAsync(() => getSessionUser());
   const [user, setUser] = createStore<UserStore>({
     userId: userSession()?.user?.id,
@@ -29,7 +29,7 @@ export function UserProvider(props: {children: JSX.Element}) {
     <UserContext.Provider value={[user, setState]}>
       {props.children}
     </UserContext.Provider>
-  )
+  );
 }
 
 export function useUser() {
@@ -37,4 +37,3 @@ export function useUser() {
   if (!context) throw new Error("useUser must be used within UserProvider");
   return context;
 }
-

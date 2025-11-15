@@ -36,7 +36,6 @@ interface MultiSelectProps<T> extends BaseProps<T> {
 
 type SearchableDropdownProps<T> = SingleSelectProps<T> | MultiSelectProps<T>;
 
-
 export default function SearchDropdown<T>(props: SearchableDropdownProps<T>) {
   const [query, setQuery] = createSignal("");
   const [results, setResults] = createSignal<T[]>([]);
@@ -49,8 +48,8 @@ export default function SearchDropdown<T>(props: SearchableDropdownProps<T>) {
     Array.isArray(props.defaultSelected)
       ? props.defaultSelected
       : props.defaultSelected
-      ? [props.defaultSelected]
-      : []
+        ? [props.defaultSelected]
+        : [],
   );
 
   let observerRef: IntersectionObserver | null = null;
@@ -85,11 +84,13 @@ export default function SearchDropdown<T>(props: SearchableDropdownProps<T>) {
   }, 200);
 
   createEffect(() => {
-    setSelectedItems(Array.isArray(props.defaultSelected)
-      ? props.defaultSelected
-      : props.defaultSelected
-      ? [props.defaultSelected]
-      : []);
+    setSelectedItems(
+      Array.isArray(props.defaultSelected)
+        ? props.defaultSelected
+        : props.defaultSelected
+          ? [props.defaultSelected]
+          : [],
+    );
   });
 
   createEffect(() => {
@@ -104,7 +105,9 @@ export default function SearchDropdown<T>(props: SearchableDropdownProps<T>) {
 
   createEffect(() => {
     if (!props.multi && props.defaultSelected) {
-      const label = props.getLabel?.(props.defaultSelected as T) ?? String(props.defaultSelected);
+      const label =
+        props.getLabel?.(props.defaultSelected as T) ??
+        String(props.defaultSelected);
       setQuery(label);
     }
   });
@@ -125,15 +128,16 @@ export default function SearchDropdown<T>(props: SearchableDropdownProps<T>) {
   };
 
   const toggleSelect = (item: T) => {
-
     if (props.readonly) return;
 
     if (props.multi) {
       const exists = selectedItems().some(
-        (s) => props.getLabel?.(s) === props.getLabel?.(item)
+        (s) => props.getLabel?.(s) === props.getLabel?.(item),
       );
       const updated = exists
-        ? selectedItems().filter((s) => props.getLabel?.(s) !== props.getLabel?.(item))
+        ? selectedItems().filter(
+            (s) => props.getLabel?.(s) !== props.getLabel?.(item),
+          )
         : [...selectedItems(), item];
 
       setSelectedItems(updated);
@@ -204,36 +208,40 @@ export default function SearchDropdown<T>(props: SearchableDropdownProps<T>) {
             }
           }}
           onFocus={() => setShowDropdown(true)}
-          onBlur={() => setTimeout(() => {
-            setShowDropdown(false);
-            setHighlightedIndex(-1);
-          }, 150)}
+          onBlur={() =>
+            setTimeout(() => {
+              setShowDropdown(false);
+              setHighlightedIndex(-1);
+            }, 150)
+          }
         />
       </div>
       <Show when={props.multi && selectedItems().length > 0}>
         <div class="mt-3 flex flex-wrap gap-2 border border-gray-200 p-2 rounded-md bg-gray-50">
-          <For each={selectedItems()}>{(item) => (
-            <div class="flex items-center gap-2 bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
-              <span>{props.getLabel?.(item) ?? String(item)}</span>
-              <Show when={!props.readonly}>
-                <button
-                  type="button"
-                  class="text-blue-600 hover:text-blue-800 focus:outline-none"
-                  onClick={() => {
-                    if (props.multi) {
-                      const updated = selectedItems().filter(
-                        (s) => props.getLabel?.(s) !== props.getLabel?.(item)
-                      );
-                      setSelectedItems(updated);
-                      props.onSelect?.(updated);
-                    }
-                  }}
-                >
-                  ✕
-                </button>
-              </Show>
-            </div>
-          )}</For>
+          <For each={selectedItems()}>
+            {(item) => (
+              <div class="flex items-center gap-2 bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
+                <span>{props.getLabel?.(item) ?? String(item)}</span>
+                <Show when={!props.readonly}>
+                  <button
+                    type="button"
+                    class="text-blue-600 hover:text-blue-800 focus:outline-none"
+                    onClick={() => {
+                      if (props.multi) {
+                        const updated = selectedItems().filter(
+                          (s) => props.getLabel?.(s) !== props.getLabel?.(item),
+                        );
+                        setSelectedItems(updated);
+                        props.onSelect?.(updated);
+                      }
+                    }}
+                  >
+                    ✕
+                  </button>
+                </Show>
+              </div>
+            )}
+          </For>
         </div>
       </Show>
 
@@ -241,14 +249,16 @@ export default function SearchDropdown<T>(props: SearchableDropdownProps<T>) {
         <div class="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto text-sm">
           <Show
             when={results().length > 0}
-            fallback={<div class="px-4 py-3 text-gray-400">No results found.</div>}
+            fallback={
+              <div class="px-4 py-3 text-gray-400">No results found.</div>
+            }
           >
             <ul>
               <For each={results()}>
                 {(item, i) => {
                   const index = i();
                   const selected = selectedItems().some(
-                    (s) => props.getLabel?.(s) === props.getLabel?.(item)
+                    (s) => props.getLabel?.(s) === props.getLabel?.(item),
                   );
                   return (
                     <li

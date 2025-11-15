@@ -9,7 +9,9 @@ import { usePagination } from "~/compose/createSearchResource";
 import Input from "~/components/ui/Input";
 import Search from "lucide-solid/icons/search";
 
-const TablePagination = clientOnly(() => import("~/components/Table/TablePagination"));
+const TablePagination = clientOnly(
+  () => import("~/components/Table/TablePagination"),
+);
 
 const headers: { key: string; label: string }[] = [
   { key: "id", label: "ID" },
@@ -22,32 +24,23 @@ const headers: { key: string; label: string }[] = [
 
 export default function PlayerHome() {
   const navigate = useNavigate();
-  const {
-    data,
-    setSearch,
-    search,
-    page,
-    setPage,
-    hasMore,
-    loading,
-  } = usePagination<Player, any>({
-    fetcher: getPlayers,
-    pageSize: 5,
-    initialSort: "-id",
-  });
+  const { data, setSearch, search, page, setPage, hasMore, loading } =
+    usePagination<Player, any>({
+      fetcher: getPlayers,
+      pageSize: 5,
+      initialSort: "-id",
+    });
 
   return (
     <div class="bg-white p-8 rounded">
       <div class="flex flex-row justify-between px-4">
-        <div class="text-xl font-bold">
-          Table Player
-        </div>
+        <div class="text-xl font-bold">Table Player</div>
         <div>
           <Button
             size="lg"
             variant="outline"
             onClick={() => {
-              navigate('/admin/player/create')
+              navigate("/admin/player/create");
             }}
           >
             Create
@@ -63,7 +56,7 @@ export default function PlayerHome() {
             setSearch(e.currentTarget.value);
           }}
           error={null}
-          icon={<Search size={18}/>}
+          icon={<Search size={18} />}
           placeholder="Search..."
         />
       </div>
@@ -75,12 +68,12 @@ export default function PlayerHome() {
         hasMore={hasMore}
         loading={loading}
         setData={(key, value) => {
-          if (['created_at', 'updated_at'].includes(key)) {
+          if (["created_at", "updated_at"].includes(key)) {
             return writeDate(new Date(value));
           }
           return value;
         }}
-        renderActions={ (data: unknown, index: number) => {
+        renderActions={(data: unknown, index: number) => {
           const parlour = data as Player;
           return (
             <div class="flex gap-2">
@@ -89,7 +82,7 @@ export default function PlayerHome() {
                 variant="outline"
                 class="hover:bg-gray-200"
                 onClick={() => {
-                  navigate(`/admin/player/${parlour.id}`)
+                  navigate(`/admin/player/${parlour.id}`);
                 }}
               >
                 <Eye size={16} />
@@ -99,7 +92,7 @@ export default function PlayerHome() {
                 variant="outline"
                 class="hover:bg-gray-200"
                 onClick={() => {
-                  navigate(`/admin/player/${parlour.id}/edit`)
+                  navigate(`/admin/player/${parlour.id}/edit`);
                 }}
               >
                 <Pencil size={16} />
@@ -109,5 +102,5 @@ export default function PlayerHome() {
         }}
       />
     </div>
-  )
+  );
 }

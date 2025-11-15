@@ -1,11 +1,17 @@
-import { action, redirect, revalidate } from "@solidjs/router";
-import { getSessionUser, loginProtected, pageOnlyFor, setSession, terminateSession, User } from "./auth/session";
+import { action, redirect } from "@solidjs/router";
+import {
+  getSessionUser,
+  loginProtected,
+  pageOnlyFor,
+  terminateSession,
+  User,
+} from "./auth/session";
 
-export type USER = 'admin' | 'player';
+export type USER = "admin" | "player";
 
 export const INITIAL_FIELD = {
-    'username': '',
-    'password': '',
+  username: "",
+  password: "",
 };
 
 export const logout = action(async () => {
@@ -13,7 +19,7 @@ export const logout = action(async () => {
 
   await terminateSession();
 
-  throw redirect('/', {
-    revalidate: [getSessionUser.key, loginProtected.key, pageOnlyFor.key]
+  throw redirect("/", {
+    revalidate: [getSessionUser.key, loginProtected.key, pageOnlyFor.key],
   });
 });

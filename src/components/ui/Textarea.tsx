@@ -28,7 +28,7 @@ export default function Textarea(p: TextareaProps) {
       size: "full" as InputSize,
       rows: 4,
     },
-    p
+    p,
   );
 
   const textareaClass = `${sizeClasses[props.size]} resize-none block w-full border border-gray-300 rounded-md text-gray-900 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none`;
@@ -58,4 +58,3 @@ export default function Textarea(p: TextareaProps) {
     </div>
   );
 }
-

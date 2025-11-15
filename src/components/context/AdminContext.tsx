@@ -7,7 +7,7 @@ type AdminStore = {
   adminId?: number;
   username?: string;
   selectedLabel: string;
-}
+};
 
 type AdminContextType = [
   state: AdminStore,
@@ -16,7 +16,7 @@ type AdminContextType = [
 
 const AdminContext = createContext<AdminContextType>();
 
-export function AdminProvider(props: {children: JSX.Element}) {
+export function AdminProvider(props: { children: JSX.Element }) {
   const adminSession = createAsync(() => getSessionUser());
   const [admin, setAdmin] = createStore<AdminStore>({
     adminId: adminSession()?.user?.id,
@@ -30,7 +30,7 @@ export function AdminProvider(props: {children: JSX.Element}) {
     <AdminContext.Provider value={[admin, setState]}>
       {props.children}
     </AdminContext.Provider>
-  )
+  );
 }
 
 export function useAdmin() {

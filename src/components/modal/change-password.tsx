@@ -11,14 +11,11 @@ import { updatePasswordAdmin } from "~/api/admin";
 type ChangePasswordModalProps = {
   open: boolean;
   onClose: () => void;
-  type: 'admin' | 'player';
+  type?: "admin" | "player";
 };
 
 export default function ChangePasswordModal(props: ChangePasswordModalProps) {
-  const {
-    fields,
-    handleSubmit,
-  } = useForm(
+  const { fields, handleSubmit } = useForm(
     {
       old_password: "",
       new_password: "",
@@ -26,11 +23,15 @@ export default function ChangePasswordModal(props: ChangePasswordModalProps) {
     {
       old_password: [min(8)],
       new_password: [min(8)],
-    }
+    },
   );
 
-  const submission = useSubmission(props.type === 'player' ? updatePasswordPlayer : updatePasswordAdmin);
-  const actionUpdatePasswordPlayer = useAction(props.type === 'player' ? updatePasswordPlayer : updatePasswordAdmin);
+  const submission = useSubmission(
+    props.type === "player" ? updatePasswordPlayer : updatePasswordAdmin,
+  );
+  const actionUpdatePasswordPlayer = useAction(
+    props.type === "player" ? updatePasswordPlayer : updatePasswordAdmin,
+  );
 
   createEffect(() => {
     if (!submission.error && submission.result) {

@@ -9,7 +9,7 @@ type DateTimeInputProps = {
   name?: string;
   min?: string;
   max?: string;
-  mode?: "date" | "time" | "datetime"; // 🔥 Mode added
+  mode?: "date" | "time" | "datetime";
 };
 
 export default function DateTimeInput(props: DateTimeInputProps): JSX.Element {
@@ -27,7 +27,10 @@ export default function DateTimeInput(props: DateTimeInputProps): JSX.Element {
   return (
     <div class="w-full relative">
       {props.label && (
-        <label for={props.name} class="block mb-1 text-sm font-medium text-gray-700">
+        <label
+          for={props.name}
+          class="block mb-1 text-sm font-medium text-gray-700"
+        >
           {props.label} {props.required && <span class="text-red-500">*</span>}
         </label>
       )}
@@ -41,16 +44,14 @@ export default function DateTimeInput(props: DateTimeInputProps): JSX.Element {
         min={props.min}
         max={props.max}
         class={`
-          w-full px-4 py-3 rounded-lg border 
+          w-full px-4 py-3 rounded-lg border
           ${props.error ? "border-red-500" : "border-gray-300"}
           focus:outline-none focus:ring-2 focus:ring-blue-500
           text-gray-700 bg-white shadow-sm transition
         `}
       />
 
-      {props.error && (
-        <p class="mt-1 text-sm text-red-600">{props.error}</p>
-      )}
+      {props.error && <p class="mt-1 text-sm text-red-600">{props.error}</p>}
     </div>
   );
 }

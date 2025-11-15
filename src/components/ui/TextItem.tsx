@@ -18,10 +18,10 @@ const TextItem: Component<TextItemProps> = (props) => {
 
   return (
     <div
-      class={`px-4 py-2 rounded text-gray-800 
-              ${sizeClass} 
-              hover:bg-gray-100 active:bg-gray-200 
-              transition-colors duration-150 
+      class={`px-4 py-2 rounded text-gray-800
+              ${sizeClass}
+              hover:bg-gray-100 active:bg-gray-200
+              transition-colors duration-150
               select-none cursor-pointer ${props.class ?? ""}`}
       onClick={props.onClick}
     >

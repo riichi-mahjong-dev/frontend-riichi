@@ -8,7 +8,7 @@ export default function App() {
   return (
     <MetaProvider>
       <Router
-        root={props => (
+        root={(props) => (
           <>
             <Suspense>{props.children}</Suspense>
           </>

@@ -1,6 +1,6 @@
-export function writeDate(date: Date | null): string {
-  if (!date) return '-';
-  const pad = (n: number) => n.toString().padStart(2, '0');
+export function writeDate(date?: Date | null): string {
+  if (!date) return "-";
+  const pad = (n: number) => n.toString().padStart(2, "0");
 
   const year = date.getFullYear();
   const month = pad(date.getMonth() + 1); // months are 0-indexed
@@ -12,7 +12,7 @@ export function writeDate(date: Date | null): string {
 }
 
 export function writeDateOnly(date: Date): string {
-  const pad = (n: number) => n.toString().padStart(2, '0');
+  const pad = (n: number) => n.toString().padStart(2, "0");
 
   const year = date.getFullYear();
   const month = pad(date.getMonth() + 1); // months are 0-indexed
@@ -22,5 +22,5 @@ export function writeDateOnly(date: Date): string {
 }
 
 export function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

@@ -40,4 +40,3 @@ export default function Modal(props: ModalProps) {
     </Show>
   );
 }
-

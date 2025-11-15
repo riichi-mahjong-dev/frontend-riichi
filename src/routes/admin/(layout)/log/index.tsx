@@ -1,8 +1,5 @@
-import { useNavigate } from "@solidjs/router";
 import { clientOnly } from "@solidjs/start";
 import Button from "~/components/ui/Button";
-import Pencil from "lucide-solid/icons/pencil";
-import Eye from "lucide-solid/icons/eye";
 import { writeDate, writeDateOnly } from "~/utils/common";
 import { usePagination } from "~/compose/createSearchResource";
 import Input from "~/components/ui/Input";
@@ -12,7 +9,9 @@ import Dropdown from "~/components/Layout/Dropdown";
 import { MatchFilter } from "~/components/Layout/MatchFilter";
 import Funnel from "lucide-solid/icons/funnel";
 
-const TablePagination = clientOnly(() => import("~/components/Table/TablePagination"));
+const TablePagination = clientOnly(
+  () => import("~/components/Table/TablePagination"),
+);
 
 const headers: { key: string; label: string }[] = [
   { key: "id", label: "ID" },
@@ -48,26 +47,29 @@ export default function AdminHome() {
               variant="outline"
               fullWidth
               onClick={toggle}
-              leftIcon={<Funnel/>}
+              leftIcon={<Funnel />}
             >
-            Filter
+              Filter
             </Button>
           )}
         >
-        {(toggle) => (
-          <div class="p-6">
-            <MatchFilter
-              onApply={(start_date, end_date) => {
-                if (start_date && end_date) {
-                  setFilters((prev) => {
-                    return {...prev, 'created_between': `${writeDateOnly(start_date)},${writeDateOnly(end_date)}`}
-                  });
-                  toggle();
-                }
-              }}
-            />
-          </div>
-        )}
+          {(toggle) => (
+            <div class="p-6">
+              <MatchFilter
+                onApply={(start_date, end_date) => {
+                  if (start_date && end_date) {
+                    setFilters((prev) => {
+                      return {
+                        ...prev,
+                        created_between: `${writeDateOnly(start_date)},${writeDateOnly(end_date)}`,
+                      };
+                    });
+                    toggle();
+                  }
+                }}
+              />
+            </div>
+          )}
         </Dropdown>
         <Input
           size="full"
@@ -77,7 +79,7 @@ export default function AdminHome() {
             setSearch(e.currentTarget.value);
           }}
           error={null}
-          icon={<Search size={18}/>}
+          icon={<Search size={18} />}
           placeholder="Search..."
         />
       </div>
@@ -89,16 +91,15 @@ export default function AdminHome() {
         hasMore={hasMore}
         loading={loading}
         setData={(key, value) => {
-          if (['created_at', 'updated_at'].includes(key)) {
+          if (["created_at", "updated_at"].includes(key)) {
             return writeDate(new Date(value));
           }
-          if (key === 'reason') {
-            return value ? value : '-';
+          if (key === "reason") {
+            return value ? value : "-";
           }
           return value;
         }}
       />
     </div>
-  )
+  );
 }
-

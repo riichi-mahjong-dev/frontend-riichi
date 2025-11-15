@@ -25,7 +25,7 @@ export default function Input(p: InputProps) {
       iconPosition: "left",
       error: null,
     },
-    p
+    p,
   );
 
   const paddingClass = () => {
@@ -34,10 +34,10 @@ export default function Input(p: InputProps) {
   };
 
   const sizeClasses: SizeClassMap = {
-    "small": "text-sm py-1 px-2",
-    "medium": "text-base py-2 px-3",
-    "large": "text-lg py-3 px-4",
-    "full": "text-base py-2 px-3 w-full",
+    small: "text-sm py-1 px-2",
+    medium: "text-base py-2 px-3",
+    large: "text-lg py-3 px-4",
+    full: "text-base py-2 px-3 w-full",
   };
 
   const sizeClass: SizeInput = props.size ?? "full";

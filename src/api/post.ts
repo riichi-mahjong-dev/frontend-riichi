@@ -1,5 +1,12 @@
 import { action, query } from "@solidjs/router";
-import { ErrorResponse, fetchApi, PaginateRequest, PaginateResponse, ResponseData, toQueryParams } from "./base";
+import {
+  ErrorResponse,
+  fetchApi,
+  PaginateRequest,
+  PaginateResponse,
+  ResponseData,
+  toQueryParams,
+} from "./base";
 
 export type Post = {
   id: number;
@@ -9,36 +16,39 @@ export type Post = {
   created_at: Date;
   updated_at: Date;
   slug: string;
-}
+};
 
 export type PlayerResponse = {
   message: string;
   list: Array<Post>;
   has_more: boolean;
-}
+};
 
-export const getPlayers = query(async (paginateRequest: PaginateRequest): Promise<PlayerResponse> => {
-  "use server";
-  const query = toQueryParams(paginateRequest);
-  const res = await fetchApi<PaginateResponse<Post>>(`/api/posts?${query}`);
+export const getPlayers = query(
+  async (paginateRequest: PaginateRequest): Promise<PlayerResponse> => {
+    "use server";
+    const query = toQueryParams(paginateRequest);
+    const res = await fetchApi<PaginateResponse<Post>>(`/api/posts?${query}`);
 
-  if (!res.success) {
+    if (!res.success) {
+      return {
+        message: (res as ErrorResponse).error,
+        list: [],
+        has_more: false,
+      };
+    }
+
+    const response = res as PaginateResponse<Post>;
     return {
-      message: (res as ErrorResponse).error,
-      list: [],
-      has_more: false,
+      message: response.message,
+      list: response.data,
+      has_more: response.meta.has_more,
     };
-  }
+  },
+  "post-list",
+);
 
-  const response = (res as PaginateResponse<Post>);
-  return {
-    message: response.message,
-    list: response.data,
-    has_more: response.meta.has_more,
-  };
-}, "post-list");
-
-export const getPlayerById = query(async (id: number): Promise<Post|null> => {
+export const getPlayerById = query(async (id: number): Promise<Post | null> => {
   "use server";
 
   const res = await fetchApi<ResponseData<Post>>(`/api/posts/${id}`);
@@ -48,13 +58,13 @@ export const getPlayerById = query(async (id: number): Promise<Post|null> => {
   }
 
   return (res as ResponseData<Post>).data;
-}, 'post-detail');
+}, "post-detail");
 
 export const deletePlayerById = action(async (id: number): Promise<boolean> => {
   "use server";
 
   const res = await fetchApi<ResponseData<null>>(`/api/posts/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
   });
 
   if (!res.success) {
@@ -68,11 +78,10 @@ export const createPlayer = action(async (): Promise<Post> => {
   "use server";
 
   const res = await fetchApi<ResponseData<Post>>(`/api/posts`, {
-    method: 'POST'
+    method: "POST",
   });
 
   if (!res.success) {
-    
   }
 
   return (res as ResponseData<Post>).data;
@@ -82,11 +91,10 @@ export const updatePlayer = action(async (id: number): Promise<Post> => {
   "use server";
 
   const res = await fetchApi<ResponseData<Post>>(`/api/posts/${id}`, {
-    method: 'PUT'
+    method: "PUT",
   });
 
   if (!res.success) {
-    
   }
 
   return (res as ResponseData<Post>).data;

@@ -53,7 +53,10 @@ const TablePagination = <T,>(props: TablePaginationProps<T>) => {
                         content = header.value(row);
                       } else {
                         const keys = header.key.split(".");
-                        let value = keys.reduce((acc: any, key) => acc?.[key] ?? "", row);
+                        let value = keys.reduce(
+                          (acc: any, key) => acc?.[key] ?? "",
+                          row,
+                        );
                         content = props.setData(header.key, value);
                       }
 
@@ -62,7 +65,7 @@ const TablePagination = <T,>(props: TablePaginationProps<T>) => {
                   </For>
                   <Show when={props.renderActions}>
                     <td class="px-5 py-3">
-                        {props.renderActions?.(row, index())}
+                      {props.renderActions?.(row, index())}
                     </td>
                   </Show>
                 </tr>
@@ -70,7 +73,10 @@ const TablePagination = <T,>(props: TablePaginationProps<T>) => {
             </For>
             <Show when={props.data().length === 0}>
               <tr>
-                <td class="px-4 py-4 text-center" colspan={props.headers.length + 1}>
+                <td
+                  class="px-4 py-4 text-center"
+                  colspan={props.headers.length + 1}
+                >
                   No Result
                 </td>
               </tr>
