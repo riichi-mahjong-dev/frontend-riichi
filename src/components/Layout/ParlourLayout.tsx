@@ -1,4 +1,4 @@
-import { createResource, For, onMount, Suspense } from "solid-js";
+import { createResource, For, onMount, Show, Suspense } from "solid-js";
 import { PaginateRequest } from "~/api/base";
 import { getParlours } from "~/api/parlour";
 import ParlourCard from "../Card/Parlour";
@@ -50,9 +50,11 @@ export default function ParlourLayout() {
               )}
             </For>
           </div>
-          <a href="/parlour" class="font-bold">
-            see more
-          </a>
+          <Show when={parlours()?.list?.length ?? 0 > 0}>
+            <a href="/match" class="font-bold">
+              see more
+            </a>
+          </Show>
         </Suspense>
       </div>
     </div>

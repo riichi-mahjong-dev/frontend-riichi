@@ -91,7 +91,7 @@ export default function HomeLayout(props: RouteSectionProps) {
               trigger={(toggle) => (
                 <div class="flex gap-2">
                   <div
-                    class="flex text-black justify-center items-center h-9 w-9 text-xl font-bold bg-mj-green-300 dark:text-white rounded cursor-pointer"
+                    class="flex text-black justify-center items-center h-9 w-9 text-xl font-bold bg-mj-green-300 dark:text-white rounded-full cursor-pointer"
                     onClick={toggle}
                   >
                     <User />

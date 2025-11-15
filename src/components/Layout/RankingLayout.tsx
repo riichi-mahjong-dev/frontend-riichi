@@ -1,4 +1,4 @@
-import { createResource, For, onMount, Suspense } from "solid-js";
+import { createResource, For, onMount, Show, Suspense } from "solid-js";
 import { PaginateRequest } from "~/api/base";
 import PlayerCard from "../Card/Player";
 import { getPlayers } from "~/api/player";
@@ -50,9 +50,11 @@ export default function RankingLayout() {
               )}
             </For>
           </div>
-          <a href="/ranked" class="font-bold">
-            see more
-          </a>
+          <Show when={ranks()?.list?.length ?? 0 > 0}>
+            <a href="/match" class="font-bold">
+              see more
+            </a>
+          </Show>
         </Suspense>
       </div>
     </div>

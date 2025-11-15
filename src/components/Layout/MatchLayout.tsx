@@ -1,4 +1,4 @@
-import { createResource, For, onMount, Suspense } from "solid-js";
+import { createResource, For, onMount, Show, Suspense } from "solid-js";
 import { PaginateRequest } from "~/api/base";
 import MatchCard from "../Card/Match";
 import { getMatches } from "~/api/match";
@@ -50,9 +50,11 @@ export default function MatchLayout() {
               )}
             </For>
           </div>
-          <a href="/match" class="font-bold">
-            see more
-          </a>
+          <Show when={matches()?.list?.length ?? 0 > 0}>
+            <a href="/match" class="font-bold">
+              see more
+            </a>
+          </Show>
         </Suspense>
       </div>
     </div>
